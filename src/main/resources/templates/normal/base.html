@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto navbar-nav-scroll text-uppercase" style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/user/index}">Home</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -31,6 +31,15 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" aria-disabled="false" th:href="@{/logout}">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/user/add-product}" method="post">
+                        <select style="display: inline-block;" class="form-control" id="dropDownList" name="dropDownList">
+                            <option value="0">select option</option>
+                            <option th:each="adminProduct : ${adminProductList}" th:value="${adminProduct.adminProductName}" th:text="${adminProduct.adminProductName}"></option>
+                        </select>
+                        <button type="submit">Save</button>
+                    </form>
                 </li>
 <!--                <li class="nav-item">-->
 <!--                    <a class="nav-link" th:href="@{/signup}">Sign Up</a>-->
@@ -47,9 +56,10 @@
 <!--                                            Navbar Ends-->
 
     <div class="sidebar mt-2">
-        <a href="#" th:href="@{/user/index}" class="item"><i class="fas fa-home"></i> Home</a>
+        <a href="#" th:href="@{/}" class="item"><i class="fas fa-home"></i> Home</a>
         <a href="#" th:href="@{/user/show-contacts}" class="item"><i class="fas fa-id-card-alt"></i> View Contacts</a>
         <a href="#" th:href="@{/user/add-contact}" class="item"><i class="fas fa-pencil-alt"></i> Add Contact</a>
+        <a href="#" th:href="@{/user/show-products}" class="item"><i class="fa-solid fa-eye"></i> Show Products</a>
         <a href="#" class="item"><i class="fas fa-user-circle"></i> Your Profile</a>
         <a href="#" class="item"><i class="fas fa-cogs"></i> Settings</a>
         <a href="#" th:href="@{/logout}" class="item"><i class="fas fa-sign-out-alt"></i> Logout</a>

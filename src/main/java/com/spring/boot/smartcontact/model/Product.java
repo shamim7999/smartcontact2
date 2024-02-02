@@ -16,7 +16,7 @@ public class Product {
     private int productId;
 
     @Column(name = "product_name")
-    private int productName;
+    private String productName;
 
     @ManyToOne
     private User user;

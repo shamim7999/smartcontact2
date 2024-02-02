@@ -1,9 +1,13 @@
 package com.spring.boot.smartcontact.controller;
 
+import com.spring.boot.smartcontact.dao.AdminProductRepository;
 import com.spring.boot.smartcontact.dao.ContactRepository;
+import com.spring.boot.smartcontact.dao.ProductRepository;
 import com.spring.boot.smartcontact.dao.UserRepository;
 import com.spring.boot.smartcontact.helper.Message;
+import com.spring.boot.smartcontact.model.AdminProduct;
 import com.spring.boot.smartcontact.model.Contact;
+import com.spring.boot.smartcontact.model.Product;
 import com.spring.boot.smartcontact.model.User;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -31,15 +35,29 @@ public class UserController {
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private AdminProductRepository adminProductRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
     @ModelAttribute
     public void addCommonAttribute(Model model, Principal principal) {
         User user = this.userRepository.getUserByUserName(principal.getName());
         model.addAttribute("user", user);
+
+
     }
 
     @GetMapping("/index")
     public String dashBoard(Model model, Principal principal) {
         model.addAttribute("title", "User Dashboard");
+
+        List<AdminProduct> adminProductList = this.adminProductRepository.findAll();
+        model.addAttribute("adminProductList", adminProductList);
+
+        //model.addAttribute("message", "")
         return "normal/user_dashboard";
     }
 
@@ -121,8 +139,19 @@ public class UserController {
     ///////////////////////////// Product ////////////////////////
 
     @GetMapping("/show-products")
-    public String showProducts() {
-        return "user/show_products";
+    public String showProducts(Model model) {
+        List<Product> productList = this.productRepository.findAll();
+        model.addAttribute("productList", productList);
+        return "normal/show_products";
+    }
+
+    @PostMapping("/add-product")
+    public String addProduct(@RequestParam("dropDownList") String item, Principal principal) {
+        Product product = new Product();
+        product.setProductName(item);
+        product.setUser(this.userRepository.getUserByUserName(principal.getName()));
+        this.productRepository.save(product);
+        return "redirect:/user/index";
     }
 
 

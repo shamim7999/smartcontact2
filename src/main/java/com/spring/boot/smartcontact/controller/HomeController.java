@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 public class HomeController {
     @Autowired
@@ -20,8 +22,16 @@ public class HomeController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/")
-    public String dispatch() {
+    @GetMapping({"/", "/home"})
+    public String dispatch(Model model, Principal principal) {
+        model.addAttribute("title", "Home Page");
+        model.addAttribute("message", "Hi");
+        model.addAttribute("type", "success");
+        model.addAttribute("user", null);
+        if(principal != null) {
+            User user = this.userRepository.getUserByUserName(principal.getName());
+            model.addAttribute("user", user);
+        }
         return "home";
     }
 
@@ -41,16 +51,17 @@ public class HomeController {
         return "Test working fine";
     }
 
-    @GetMapping("/home")
-    public String home(Model model) {
-        model.addAttribute("title", "Home - Smart Contact");
-        return "home";
-    }
+//    @GetMapping("/home")
+//    public String home(Model model) {
+//        model.addAttribute("title", "Home - Smart Contact");
+//        return "home";
+//    }
 
     @GetMapping("/signup")
     public String signUp(Model model) {
         model.addAttribute("title", "Sign Up - Smart Contact");
         model.addAttribute("user", new User());
+        model.addAttribute("showLoginButton", 1);
         return "signup";
     }
 
@@ -59,6 +70,7 @@ public class HomeController {
                                @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
                                Model model,
                                HttpSession session) {
+        model.addAttribute("showLoginButton", 1);
 
         try {
             if(!agreement) {

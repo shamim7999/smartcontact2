@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  th:replace="base2::layout(~{::section})">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -12,7 +12,9 @@
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore enim excepturi natus placeat,
             repellendus ut velit voluptas voluptate voluptatem! Consequatur!
         </p>
-        <button class="btn bg-primary btm-lg text-white">Get Started</button>
+        <a href="#" th:if="${user!=null && user.role == 'ROLE_USER'}" th:href="@{/user/index}"><button class="btn bg-primary btm-lg text-white">Get Started</button></a>
+        <a href="#" th:if="${user!=null && user.role == 'ROLE_ADMIN'}" th:href="@{/admin/index}"><button class="btn bg-primary btm-lg text-white">Get Started</button></a>
+        <a href="#" th:if="${user == null }" th:href="@{/}"><button class="btn bg-primary btm-lg text-white">Get Started</button></a>
     </div>
 </section>
 </body>
