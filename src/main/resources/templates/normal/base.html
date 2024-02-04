@@ -32,11 +32,14 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-disabled="false" th:href="@{/logout}">Logout</a>
                 </li>
+                <li>
+                    <a class="nav-link" aria-disabled="false" th:href="@{/user/select-products}">Select Products</a>
+                </li>
                 <li class="nav-item">
                     <form th:action="@{/user/add-product}" method="post">
                         <select style="display: inline-block;" class="form-control" id="dropDownList" name="dropDownList">
                             <option value="0">select option</option>
-                            <option th:each="adminProduct : ${adminProductList}" th:value="${adminProduct.adminProductName}" th:text="${adminProduct.adminProductName}"></option>
+                            <option th:each="adminProduct : ${adminProductList}" th:value="${adminProduct.adminProductId}" th:text="${adminProduct.adminProductName}"></option>
                         </select>
                         <button type="submit">Save</button>
                     </form>
@@ -57,17 +60,17 @@
 
     <div class="sidebar mt-2">
         <a href="#" th:href="@{/}" class="item"><i class="fas fa-home"></i> Home</a>
-        <a href="#" th:href="@{/user/show-contacts}" class="item"><i class="fas fa-id-card-alt"></i> View Contacts</a>
+        <a href="#" th:href="@{/user/show-contacts/0}" class="item"><i class="fas fa-id-card-alt"></i> View Contacts</a>
         <a href="#" th:href="@{/user/add-contact}" class="item"><i class="fas fa-pencil-alt"></i> Add Contact</a>
-        <a href="#" th:href="@{/user/show-products}" class="item"><i class="fa-solid fa-eye"></i> Show Products</a>
+        <a href="#" th:href="@{/user/show-products/0}" class="item"><i class="fa-solid fa-eye"></i> Show Products</a>
         <a href="#" class="item"><i class="fas fa-user-circle"></i> Your Profile</a>
         <a href="#" class="item"><i class="fas fa-cogs"></i> Settings</a>
         <a href="#" th:href="@{/logout}" class="item"><i class="fas fa-sign-out-alt"></i> Logout</a>
         <div class="divider"></div>
     </div>
 
-    <div class="content mt-5">
-        <div th:if="${message != null}" class="container">
+    <div style="padding-top: 40px; margin-top: 40px;" class="content text-center">
+        <div th:if="${message != null}" class="container text-center">
             <div th:classappend="'alert-'+${type}" class="alert  text-center" role="alert">
                 <span th:text="${message}"></span>
             </div>

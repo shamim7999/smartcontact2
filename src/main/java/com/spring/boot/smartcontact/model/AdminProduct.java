@@ -17,4 +17,7 @@ public class AdminProduct {
 
     @Column(name = "admin_product_name")
     private String adminProductName;
+
+    @Column(name = "admin_product_status")
+    private int adminProductStatus;
 }

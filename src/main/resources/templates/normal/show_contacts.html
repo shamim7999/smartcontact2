@@ -24,7 +24,11 @@
                 <tbody>
                 <tr th:each="c : ${contactList}">
                     <th scope="row" th:text="${c.cId}">1</th>
-                    <td th:text="${c.name}">Mark</td>
+
+                    <td>
+                        <img class="my_profile_picture" src="" th:src="@{'/image/'+${c.image}}" alt="No Image">
+                        <span th:text="${c.name}"></span>
+                    </td>
                     <td th:text="${c.phone}">Otto</td>
                     <td th:text="${c.email}">@mdo</td>
                     <td th:text="${c.work}">@mdo</td>
@@ -40,6 +44,22 @@
                 </tr>
                 </tbody>
             </table>
+
+<!--            Pagination Part-->
+            <nav aria-label="Page Navigation Example">
+                <ul class="pagination">
+                    <li th:if="${currentPage > 0}" class="page-item">
+                        <a class="page-link" href="#" th:href="@{'/user/show-contacts/'+${currentPage - 1}}">Prev</a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i - 1 ? 'active':''}" class="page-item">
+                        <a class="page-link" href="#" th:href="@{'/user/show-contacts/'+${i - 1}}"><span th:text="${i}"></span></a>
+                    </li>
+                    <li th:if="${currentPage + 1 != totalPages}" class="page-item">
+                        <a class="page-link" href="#" th:href="@{'/user/show-contacts/'+${currentPage + 1}}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
         </div>
     </div>
 </section>

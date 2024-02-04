@@ -58,3 +58,9 @@ section .card {
 .inliner form {
     display: inline-block;
 }
+
+.my_profile_picture {
+    height: 35px;
+    width: 35px;
+    object-fit: cover;
+}

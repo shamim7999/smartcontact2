@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>User - Dashboard</title>
+</head>
+<body>
+<section style="padding: 30px;">
+    <div class="text-center">
+        <h1>Select Products</h1>
+        <form th:action="@{/user/add-multiple-products}" method="post">
+            <select style="display: inline-block;" class="form-control" id="dropDownList" name="dropDownList" multiple="multiple">
+                <option value="0">select option</option>
+                <option th:each="adminProduct : ${adminProductList}" th:value="${adminProduct.adminProductId}" th:text="${adminProduct.adminProductName}"></option>
+            </select>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

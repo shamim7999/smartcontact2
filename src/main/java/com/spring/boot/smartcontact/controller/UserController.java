@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +28,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -54,7 +58,7 @@ public class UserController {
     public String dashBoard(Model model, Principal principal) {
         model.addAttribute("title", "User Dashboard");
 
-        List<AdminProduct> adminProductList = this.adminProductRepository.findAll();
+        List<AdminProduct> adminProductList = this.adminProductRepository.findAllByAdminStatusProductSetToZero();
         model.addAttribute("adminProductList", adminProductList);
 
         //model.addAttribute("message", "")
@@ -82,6 +86,7 @@ public class UserController {
             if(file.isEmpty())  {
                 model.addAttribute("message",  "Something Wrong!!");
                 model.addAttribute("type", "danger");
+                contact.setImage(file.getOriginalFilename());
                 throw new Exception();
             } else {
                 contact.setImage(file.getOriginalFilename());
@@ -100,13 +105,18 @@ public class UserController {
     }
 
     // Show Contacts Handler
-    @GetMapping("/show-contacts")
-    public String showContacts(Model model, Principal principal) {
+    @GetMapping("/show-contacts/{page}")
+    public String showContacts(@PathVariable("page") Integer page, Model model, Principal principal) {
         User user = this.userRepository.getUserByUserName(principal.getName());
-        List<Contact> contactList = this.contactRepository.getContactsByUserId(user.getId());
+
+        Pageable pageable = PageRequest.of(page, 2);
+
+        Page <Contact> contactList = this.contactRepository.getContactsByUserId(user.getId(), pageable);
         System.out.println(contactList);
         model.addAttribute("title", "All Contacts");
         model.addAttribute("contactList", contactList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", contactList.getTotalPages());
         return "normal/show_contacts";
     }
 
@@ -117,12 +127,18 @@ public class UserController {
     }
 
     @PostMapping("/process-update-contact")
-    public String processUpdateContact(@ModelAttribute("contact") Contact contact, Principal principal) {
+    public String processUpdateContact(@ModelAttribute("contact") Contact contact,
+                                       @RequestParam("profileImage") MultipartFile file,
+                                       Principal principal) {
+
+        User user = this.userRepository.getUserByUserName(principal.getName());
+        contact.setUser(user);
+        if(!file.isEmpty())
+            contact.setImage(file.getOriginalFilename());
         System.out.println(contact);
-        contact.setUser(this.userRepository.getUserByUserName(principal.getName()));
         this.contactRepository.save(contact);
 
-        return "redirect:/user/show-contacts";
+        return "redirect:/user/show-contacts/0";
     }
 
     @PostMapping("/delete-contact/{id}")
@@ -132,27 +148,74 @@ public class UserController {
         User user = this.userRepository.getUserByUserName(principal.getName());
         user.getContacts().remove(contact);
         this.userRepository.save(user);
-        return "redirect:/user/show-contacts";
+        return "redirect:/user/show-contacts/0";
     }
 
 
     ///////////////////////////// Product ////////////////////////
 
-    @GetMapping("/show-products")
-    public String showProducts(Model model) {
-        List<Product> productList = this.productRepository.findAll();
+
+
+    @GetMapping("/show-products/{page}")
+    public String showProducts(@PathVariable("page") Integer page, Model model,
+                               Principal principal) {
+
+        Pageable pageable = PageRequest.of(page, 2);
+
+        User user = this.userRepository.getUserByUserName(principal.getName());
+        //List<Product> productList = this.productRepository.findAll();
+        Page<Product> productList = this.productRepository.getProductsByUserId(user.getId(), pageable);
+
+        model.addAttribute("title", "All Products");
         model.addAttribute("productList", productList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productList.getTotalPages());
         return "normal/show_products";
     }
 
     @PostMapping("/add-product")
-    public String addProduct(@RequestParam("dropDownList") String item, Principal principal) {
+    public String addProduct(@RequestParam("dropDownList") Integer item, Principal principal) {
         Product product = new Product();
-        product.setProductName(item);
+        AdminProduct adminProduct = this.adminProductRepository.findById(item).get();
+
+        product.setProductName(adminProduct.getAdminProductName());
+        product.setProductId(item);
         product.setUser(this.userRepository.getUserByUserName(principal.getName()));
         this.productRepository.save(product);
+
+        adminProduct.setAdminProductStatus(1);
+        this.adminProductRepository.save(adminProduct);
+
         return "redirect:/user/index";
     }
 
+    @GetMapping("/select-products")
+    public String selectProducts(Model model) {
+        List<AdminProduct> adminProductList = this.adminProductRepository.findAllByAdminStatusProductSetToZero();
+        model.addAttribute("adminProductList", adminProductList);
+        return "normal/select_products";
+    }
+    @PostMapping("/add-multiple-products")
+    public String addMultipleProduct(@RequestParam("dropDownList") List<Integer> items, Principal principal) {
+        //List<Product> productList = new ArrayList<>();
+        Product product = new Product();
+
+        User user = this.userRepository.getUserByUserName(principal.getName());
+
+        for(Integer id : items) {
+            AdminProduct adminProduct = this.adminProductRepository.findById(id).get();
+            product.setProductId(adminProduct.getAdminProductId());
+            product.setProductName(adminProduct.getAdminProductName());
+            product.setUser(user);
+
+            //productList.add(product);
+            this.productRepository.save(product);
+
+            adminProduct.setAdminProductStatus(1);
+            this.adminProductRepository.save(adminProduct);
+        }
+
+        return "redirect:/user/index";
+    }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.time.LocalTime;
 
 @Controller
 @RequestMapping("/admin")
@@ -44,6 +45,8 @@ public class AdminController {
 
     @PostMapping("/process-product")
     public String processProduct(@ModelAttribute("adminProduct") AdminProduct adminProduct) {
+        String productName = adminProduct.getAdminProductName() + "-" + LocalTime.now();
+        adminProduct.setAdminProductName(productName);
         this.adminProductRepository.save(adminProduct);
         return "admin/add_product_form";
     }
