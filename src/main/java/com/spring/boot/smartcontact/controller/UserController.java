@@ -79,25 +79,23 @@ public class UserController {
             model.addAttribute("message",  "Successfully added!!");
             model.addAttribute("type", "success");
             try {
-            System.out.println(contact);
-            User user = this.userRepository.getUserByUserName(principal.getName());
+                System.out.println(contact);
+                User user = this.userRepository.getUserByUserName(principal.getName());
 
-            // Processing and Uploading file
-            if(file.isEmpty())  {
-                model.addAttribute("message",  "Something Wrong!!");
-                model.addAttribute("type", "danger");
-                contact.setImage(file.getOriginalFilename());
-                throw new Exception();
-            } else {
-                contact.setImage(file.getOriginalFilename());
+                String originalFileName = "profile.jpg";
+                if(!file.isEmpty())
+                    originalFileName = file.getOriginalFilename().toString();
+                // Processing and Uploading file
+
+                contact.setImage(originalFileName);
                 File saveFile = new ClassPathResource("static/image").getFile();
-                Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
+                Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+originalFileName);
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            }
 
-            contact.setUser(user);
-            user.getContacts().add(contact);
-            this.userRepository.save(user);
+
+                contact.setUser(user);
+                user.getContacts().add(contact);
+                this.userRepository.save(user);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,6 +115,7 @@ public class UserController {
         model.addAttribute("contactList", contactList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", contactList.getTotalPages());
+        model.addAttribute("userRole", "USER");
         return "normal/show_contacts";
     }
 
@@ -219,3 +218,23 @@ public class UserController {
     }
 
 }
+
+
+/*
+
+    //process-contact
+    if(file.isEmpty())  {
+                //model.addAttribute("message",  "Something Wrong!!");
+                //model.addAttribute("type", "danger");
+                contact.setImage("profile.jpg");
+                //throw new Exception();
+
+            } else {
+                contact.setImage(file.getOriginalFilename());
+                File saveFile = new ClassPathResource("static/image").getFile();
+                Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+
+ */

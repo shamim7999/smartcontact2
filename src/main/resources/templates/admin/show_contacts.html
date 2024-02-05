@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="admin/base::layout(~{::section})">
 <head>
     <meta charset="UTF-8">
     <title>User - Dashboard</title>
@@ -34,28 +34,25 @@
                     <td th:text="${c.work}">@mdo</td>
                     <td th:text="${c.description}">@mdo</td>
                     <td class="inliner">
-                        <form method="post" th:action="@{'/user/delete-contact/'+${c.cId}}">
+                        <form method="post" th:action="@{'/admin/delete-contact/'+${c.cId}}">
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                        <form th:if="${userRole == 'USER'}" method="post" th:action="@{'/user/update-contact/'+${c.cId}}">
-                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
                         </form>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-<!--            Pagination Part-->
+            <!--            Pagination Part-->
             <nav aria-label="Page Navigation Example">
                 <ul class="pagination">
-                    <li th:classappend="${(currentPage > 0)?'':'disabled'}"  class="page-item">
-                        <a class="page-link" href="#" th:href="@{'/user/show-contacts/'+${currentPage - 1}}">Prev</a>
+                    <li th:if="${currentPage > 0}" class="page-item">
+                        <a class="page-link" href="#" th:href="@{'/admin/show-contacts/'+${currentPage - 1}}">Prev</a>
                     </li>
                     <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i - 1 ? 'active':''}" class="page-item">
-                        <a class="page-link" href="#" th:href="@{'/user/show-contacts/'+${i - 1}}"><span th:text="${i}"></span></a>
+                        <a class="page-link" href="#" th:href="@{'/admin/show-contacts/'+${i - 1}}"><span th:text="${i}"></span></a>
                     </li>
-                    <li th:classappend="${currentPage + 1 != totalPages ? '':'disabled'}" class="page-item">
-                        <a class="page-link" href="#" th:href="@{'/user/show-contacts/'+${currentPage + 1}}">Next</a>
+                    <li th:if="${currentPage + 1 != totalPages}" class="page-item">
+                        <a class="page-link" href="#" th:href="@{'/admin/show-contacts/'+${currentPage + 1}}">Next</a>
                     </li>
                 </ul>
             </nav>
