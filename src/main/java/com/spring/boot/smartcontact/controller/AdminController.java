@@ -1,8 +1,8 @@
 package com.spring.boot.smartcontact.controller;
 
-import com.spring.boot.smartcontact.dao.AdminProductRepository;
-import com.spring.boot.smartcontact.dao.ContactRepository;
-import com.spring.boot.smartcontact.dao.UserRepository;
+import com.spring.boot.smartcontact.Repository.AdminProductRepository;
+import com.spring.boot.smartcontact.Repository.ContactRepository;
+import com.spring.boot.smartcontact.Repository.UserRepository;
 import com.spring.boot.smartcontact.model.AdminProduct;
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;

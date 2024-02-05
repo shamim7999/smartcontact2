@@ -1,6 +1,6 @@
 package com.spring.boot.smartcontact.config;
 
-import com.spring.boot.smartcontact.dao.UserRepository;
+import com.spring.boot.smartcontact.Repository.UserRepository;
 import com.spring.boot.smartcontact.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,6 @@
 package com.spring.boot.smartcontact.controller;
 
-import com.spring.boot.smartcontact.dao.UserRepository;
+import com.spring.boot.smartcontact.Repository.UserRepository;
 import com.spring.boot.smartcontact.helper.Message;
 import com.spring.boot.smartcontact.model.User;
 import jakarta.servlet.http.HttpSession;
@@ -16,11 +16,13 @@ import java.security.Principal;
 
 @Controller
 public class HomeController {
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public HomeController(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userRepository = userRepository;
+    }
 
     @GetMapping({"/", "/home"})
     public String dispatch(Model model, Principal principal) {

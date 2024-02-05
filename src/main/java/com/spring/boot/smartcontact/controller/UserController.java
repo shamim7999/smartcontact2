@@ -1,24 +1,19 @@
 package com.spring.boot.smartcontact.controller;
 
-import com.spring.boot.smartcontact.dao.AdminProductRepository;
-import com.spring.boot.smartcontact.dao.ContactRepository;
-import com.spring.boot.smartcontact.dao.ProductRepository;
-import com.spring.boot.smartcontact.dao.UserRepository;
-import com.spring.boot.smartcontact.helper.Message;
+import com.spring.boot.smartcontact.Repository.AdminProductRepository;
+import com.spring.boot.smartcontact.Repository.ContactRepository;
+import com.spring.boot.smartcontact.Repository.ProductRepository;
+import com.spring.boot.smartcontact.Repository.UserRepository;
 import com.spring.boot.smartcontact.model.AdminProduct;
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.Product;
 import com.spring.boot.smartcontact.model.User;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,23 +23,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final ContactRepository contactRepository;
+    private final AdminProductRepository adminProductRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private ContactRepository contactRepository;
+    public UserController(UserRepository userRepository,
+                          ContactRepository contactRepository,
+                          AdminProductRepository adminProductRepository,
+                          ProductRepository productRepository) {
+        this.userRepository = userRepository;
+        this.contactRepository = contactRepository;
+        this.adminProductRepository = adminProductRepository;
+        this.productRepository = productRepository;
+    }
 
-    @Autowired
-    private AdminProductRepository adminProductRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
 
     @ModelAttribute
     public void addCommonAttribute(Model model, Principal principal) {
