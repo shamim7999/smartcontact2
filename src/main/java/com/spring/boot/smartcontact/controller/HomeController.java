@@ -1,6 +1,7 @@
 package com.spring.boot.smartcontact.controller;
 
 import com.spring.boot.smartcontact.Repository.UserRepository;
+import com.spring.boot.smartcontact.Service.UserService;
 import com.spring.boot.smartcontact.helper.Message;
 import com.spring.boot.smartcontact.model.User;
 import jakarta.servlet.http.HttpSession;
@@ -16,12 +17,10 @@ import java.security.Principal;
 
 @Controller
 public class HomeController {
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public HomeController(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.userRepository = userRepository;
+    public HomeController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping({"/", "/home"})
@@ -31,7 +30,7 @@ public class HomeController {
         model.addAttribute("type", "success");
         model.addAttribute("user", null);
         if(principal != null) {
-            User user = this.userRepository.getUserByUserName(principal.getName());
+            User user = this.userService.getUserByUserName(principal.getName());
             model.addAttribute("user", user);
         }
         return "home";
@@ -49,15 +48,9 @@ public class HomeController {
         User user = new User();
         user.setName("shamim");
         user.setEmail("shmaim@gmail.com");
-        this.userRepository.save(user);
+        this.userService.save(user);
         return "Test working fine";
     }
-
-//    @GetMapping("/home")
-//    public String home(Model model) {
-//        model.addAttribute("title", "Home - Smart Contact");
-//        return "home";
-//    }
 
     @GetMapping("/signup")
     public String signUp(Model model) {
@@ -84,14 +77,8 @@ public class HomeController {
                 model.addAttribute("user", user);
                 return "signup";
             }
-            user.setEnabled(true);
-            user.setRole("ROLE_USER");
-            user.setImageUrl("default.png");
-            user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
-            System.out.println("Agreement: "+agreement);
-            System.out.println("User: "+user);
 
-            this.userRepository.save(user);
+            this.userService.save(user);
 
             model.addAttribute("user", new User());
 
