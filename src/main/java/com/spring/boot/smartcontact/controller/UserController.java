@@ -1,9 +1,5 @@
 package com.spring.boot.smartcontact.controller;
 
-import com.spring.boot.smartcontact.Repository.AdminProductRepository;
-import com.spring.boot.smartcontact.Repository.ContactRepository;
-import com.spring.boot.smartcontact.Repository.ProductRepository;
-import com.spring.boot.smartcontact.Repository.UserRepository;
 import com.spring.boot.smartcontact.Service.AdminProductService;
 import com.spring.boot.smartcontact.Service.ContactService;
 import com.spring.boot.smartcontact.Service.ProductService;
@@ -12,20 +8,11 @@ import com.spring.boot.smartcontact.model.AdminProduct;
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.Product;
 import com.spring.boot.smartcontact.model.User;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.List;
 

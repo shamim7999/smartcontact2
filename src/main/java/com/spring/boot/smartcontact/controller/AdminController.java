@@ -1,18 +1,13 @@
 package com.spring.boot.smartcontact.controller;
 
-import com.spring.boot.smartcontact.Repository.AdminProductRepository;
-import com.spring.boot.smartcontact.Repository.ContactRepository;
-import com.spring.boot.smartcontact.Repository.UserRepository;
+
 import com.spring.boot.smartcontact.Service.AdminProductService;
 import com.spring.boot.smartcontact.Service.ContactService;
 import com.spring.boot.smartcontact.Service.UserService;
 import com.spring.boot.smartcontact.model.AdminProduct;
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

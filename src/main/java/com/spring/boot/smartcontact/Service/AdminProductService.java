@@ -4,7 +4,6 @@ import com.spring.boot.smartcontact.Repository.AdminProductRepository;
 import com.spring.boot.smartcontact.Repository.ContactRepository;
 import com.spring.boot.smartcontact.Repository.UserRepository;
 import com.spring.boot.smartcontact.model.AdminProduct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

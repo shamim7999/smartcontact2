@@ -1,13 +1,10 @@
 package com.spring.boot.smartcontact.controller;
 
-import com.spring.boot.smartcontact.Repository.UserRepository;
 import com.spring.boot.smartcontact.Service.UserService;
 import com.spring.boot.smartcontact.helper.Message;
 import com.spring.boot.smartcontact.model.User;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
