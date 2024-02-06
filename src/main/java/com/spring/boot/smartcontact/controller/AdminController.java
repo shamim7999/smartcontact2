@@ -3,6 +3,9 @@ package com.spring.boot.smartcontact.controller;
 import com.spring.boot.smartcontact.Repository.AdminProductRepository;
 import com.spring.boot.smartcontact.Repository.ContactRepository;
 import com.spring.boot.smartcontact.Repository.UserRepository;
+import com.spring.boot.smartcontact.Service.AdminProductService;
+import com.spring.boot.smartcontact.Service.ContactService;
+import com.spring.boot.smartcontact.Service.UserService;
 import com.spring.boot.smartcontact.model.AdminProduct;
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;
@@ -20,42 +23,38 @@ import java.time.LocalTime;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+    private final AdminProductService adminProductService;
+    private final UserService userService;
+    private final ContactService contactService;
 
-    @Autowired
-    private AdminProductRepository adminProductRepository;
+    public AdminController(AdminProductService adminProductService,
+                           UserService userService,
+                           ContactService contactService) {
+        this.adminProductService = adminProductService;
+        this.userService = userService;
+        this.contactService = contactService;
+    }
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ContactRepository contactRepository;
     @ModelAttribute
     public void addCommonAttribute(Model model, Principal principal) {
-        User user = this.userRepository.getUserByUserName(principal.getName());
+        User user = this.userService.getUserByUserName(principal.getName());
         model.addAttribute("user", user);
-
-
     }
     @GetMapping("/index")
-    public String adminHome(Model model, Principal principal) {
-        User user = this.userRepository.getUserByUserName(principal.getName());
+    public String adminHome(Model model) {
         model.addAttribute("title", "Admin Dashboard");
-        model.addAttribute("user", user);
         return "admin/user_dashboard";
     }
 
     // Show Contacts Handler
     @GetMapping("/show-contacts/{page}")
-    public String showContacts(@PathVariable("page") Integer page, Model model, Principal principal) {
-        User user = this.userRepository.getUserByUserName(principal.getName());
+    public String showContacts(@PathVariable("page") Integer currentPage, Model model) {
 
-        Pageable pageable = PageRequest.of(page, 2);
-
-        Page <Contact> contactList = this.contactRepository.findAll(pageable);
+        Page <Contact> contactList = this.contactService.findAll(currentPage);
         System.out.println(contactList);
         model.addAttribute("title", "All Contacts");
         model.addAttribute("contactList", contactList);
-        model.addAttribute("currentPage", page);
+        model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", contactList.getTotalPages());
         model.addAttribute("userRole", "ADMIN");
         return "admin/show_contacts";
@@ -63,10 +62,6 @@ public class AdminController {
 
     @GetMapping("/add-product")
     public String addProduct(Model model) {
-//        AdminProduct adminProduct = new AdminProduct();
-//        adminProduct.setAdminProductName("Dell");
-//        this.adminProductRepository.save(adminProduct);
-//        return "redirect:/admin/index";
         model.addAttribute("showLoginButton", 0);
         return "admin/add_product_form";
     }
@@ -75,13 +70,13 @@ public class AdminController {
     public String processProduct(@ModelAttribute("adminProduct") AdminProduct adminProduct) {
         String productName = adminProduct.getAdminProductName() + "-" + LocalTime.now();
         adminProduct.setAdminProductName(productName);
-        this.adminProductRepository.save(adminProduct);
+        this.adminProductService.save(adminProduct);
         return "admin/add_product_form";
     }
 
     @GetMapping("/show-products")
     public String showProducts() {
-        System.out.println(this.adminProductRepository.findAll());
+        System.out.println(this.adminProductService.findAll());
         return "redirect:/index";
     }
 }

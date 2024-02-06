@@ -17,7 +17,7 @@ public class Contact {
     private String secondName;
 
     @NotBlank(message = "Number field is required.")
-    @Size(min = 11, max = 11, message = "Enter 11 digit Number.")
+    //@Size(min = 11, max = 11, message = "Enter 11 digit Number.")
     private String phone;
 
     @NotBlank(message = "Email field is required.")
