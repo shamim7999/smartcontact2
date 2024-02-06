@@ -18,6 +18,7 @@ import java.security.Principal;
 @Controller
 public class HomeController {
     private final UserService userService;
+
     public HomeController(UserService userService) {
         this.userService = userService;
     }
@@ -64,6 +65,11 @@ public class HomeController {
                                @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
                                Model model,
                                HttpSession session) {
+
+        System.out.println("-----------------------");
+        System.out.println("Reg: "+user);
+        System.out.println("------------------------");
+
         model.addAttribute("showLoginButton", 1);
 
         try {

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="admin/base2::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
 <head>
     <meta charset="UTF-8">
     <title>Admin Product Manager</title>
 </head>
 <body>
-<section>
+<section style="margin: 50px 0 0 -550px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3">
@@ -21,7 +21,9 @@
                                    name="adminProductName"
                                    class="form-control"
                                    id="inputUserName"
-                                   placeholder="Enter Here">
+                                   placeholder="Enter Here"
+                                   required="required"
+                            >
                         </div>
 
                         <div class="container text-center">

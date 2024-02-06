@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
 <head>
     <meta charset="UTF-8">
     <title>User - Dashboard</title>
 </head>
 <body>
-<section style="padding: 30px;">
+<section style="padding: 30px; margin-top: 40px;">
     <div class="text-center">
         <h1>Select Products</h1>
         <form th:action="@{/user/add-multiple-products}" method="post">

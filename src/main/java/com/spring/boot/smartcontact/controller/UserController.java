@@ -51,10 +51,11 @@ public class UserController {
     public void addCommonAttribute(Model model, Principal principal) {
         User user = this.userService.getUserByUserName(principal.getName());
         model.addAttribute("user", user);
+        model.addAttribute("showSidebar", true);
     }
 
     @GetMapping("/index")
-    public String dashBoard(Model model, Principal principal) {
+    public String dashBoard(Model model) {
         model.addAttribute("title", "User Dashboard");
         List<AdminProduct> adminProductList = this.adminProductService.findAllByAdminStatusProductSetToZero();
         model.addAttribute("adminProductList", adminProductList);
@@ -62,7 +63,7 @@ public class UserController {
     }
 
     @GetMapping("/add-contact")
-    public String dashBoard(Model model) {
+    public String addContact(Model model) {
         model.addAttribute("contact", new Contact());
         model.addAttribute("title", "Add Contact");
         return "normal/add_contact_form";
