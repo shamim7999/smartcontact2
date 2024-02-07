@@ -46,7 +46,7 @@ public class UserController {
         model.addAttribute("title", "User Dashboard");
         List<AdminProduct> adminProductList = this.adminProductService.findAllByAdminStatusProductSetToZero();
         model.addAttribute("adminProductList", adminProductList);
-        return "normal/user_dashboard";
+        return "user_dashboard";
     }
 
     @GetMapping("/add-contact")
@@ -71,9 +71,7 @@ public class UserController {
     // Show Contacts Handler
     @GetMapping("/show-contacts/{page}")
     public String showContacts(@PathVariable("page") Integer currentPage, Model model, Principal principal) {
-        User user = this.userService.getUserByUserName(principal.getName());
-
-
+        User user = (User) model.getAttribute("user");
 
         Page <Contact> contactList = this.contactService.getContactsByUserId(user.getId(), currentPage);
         System.out.println(contactList);
@@ -184,5 +182,10 @@ public class UserController {
 
         return "redirect:/user/index";
     }
+    /////////////////////////// Profile Details ///////////////////////
 
+    @GetMapping("/profile")
+    public String profileDetails() {
+        return "profile_details";
+    }
 }

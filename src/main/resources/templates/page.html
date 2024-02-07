@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--            Pagination Part-->
+<nav aria-label="Page Navigation Example" th:fragment="my_contact_page">
+    <ul class="pagination">
+        <li th:classappend="${(currentPage > 0) ? '' : 'disabled'}" class="page-item">
+            <a class="page-link" th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-contacts/' + (currentPage - 1) : '/user/show-contacts/' + (currentPage - 1)}}">Prev</a>
+        </li>
+
+        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i - 1 ? 'active':''}" class="page-item">
+            <a class="page-link" th:if="${i > 0}" th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-contacts/' + (i - 1) : '/user/show-contacts/' + (i - 1)}}"><span th:text="${i}"></span></a>
+        </li>
+
+        <li th:classappend="${currentPage + 1 >= totalPages ? 'disabled':''}" class="page-item">
+            <a class="page-link"
+               th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-contacts/' + (currentPage + 1) : '/user/show-contacts/' + (currentPage + 1)}}">Next</a>
+        </li>
+
+    </ul>
+</nav>
+
+<nav aria-label="Page Navigation Example" th:fragment="my_product_page">
+    <ul class="pagination">
+        <li th:classappend="${(currentPage > 0) ? '' : 'disabled'}" class="page-item">
+            <a class="page-link" th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-products/' + (currentPage - 1) : '/user/show-products/' + (currentPage - 1)}}">Prev</a>
+        </li>
+
+        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i - 1 ? 'active':''}" class="page-item">
+            <a class="page-link" th:if="${i > 0}" th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-products/' + (i - 1) : '/user/show-products/' + (i - 1)}}"><span th:text="${i}"></span></a>
+        </li>
+
+        <li th:classappend="${currentPage + 1 >= totalPages ? 'disabled':''}" class="page-item">
+            <a class="page-link"
+               th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-products/' + (currentPage + 1) : '/user/show-products/' + (currentPage + 1)}}">Next</a>
+        </li>
+
+    </ul>
+</nav>
+
+</body>
+</html>

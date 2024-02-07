@@ -5,31 +5,25 @@
     <title>Sign Up</title>
 </head>
 <body>
-<section>
+<section style="margin-top: 40px;">
     <div class="container">
         <div class="col-md-8 offset-md-2">
             <div class="my-card mt-1">
-                <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert " role="alert">
-                    <p class="text-center" th:text="${session.message.content}"></p>
-                </div>
                 <div class="container text-center">
                     <img width="100px" th:src="@{/image/membership.png}" alt="No Image..">
                 </div>
                 <h1 class="text-center">Register Here !!</h1>
-                <form novalidate="novalidate" th:action="@{/register}" method="post" th:object="${user}">
+                <form novalidate="novalidate" th:action="@{/register}" method="post">
                     <!--                    name field-->
                     <div class="form-group mb-3">
                         <label for="name">Your Name</label>
                         <input type="text" class="form-control "
                                id="name" name="name" aria-describedby="email_help"
                                placeholder="Enter Name"
-                               th:value="${user.name}"
-                               th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
+
                                required
                         >
-                        <div class="invalid-feedback" th:each="e : ${#fields.errors('name')}" th:text="${e}">
 
-                        </div>
                     </div>
 
                     <!--                    email field-->
@@ -38,7 +32,6 @@
                         <input type="text" class="form-control"
                                id="email" name="email" aria-describedby="email_help"
                                placeholder="Enter email"
-                               th:value="${user.email}"
                                required
                         >
                     </div>
@@ -54,7 +47,7 @@
                     </div>
                     <!--                                            User about Field-->
                     <div class="form-group mb-3">
-                        <textarea class="form-control" th:value="${user.about}"
+                        <textarea class="form-control"
                                   placeholder="Enter something about yourself.."
                                   rows="10" name="about"></textarea>
                     </div>

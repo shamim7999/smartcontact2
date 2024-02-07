@@ -20,22 +20,25 @@ public class HomeController {
         this.userService = userService;
     }
 
+    @ModelAttribute
+    public void addCommonAttribute(Model model, Principal principal) {
+        model.addAttribute("user", null);
+        if(principal != null)
+            model.addAttribute("user", this.userService.getUserByUserName(principal.getName()));
+        model.addAttribute("showBottom", false);
+    }
+
     @GetMapping({"/", "/home"})
     public String dispatch(Model model, Principal principal) {
         model.addAttribute("title", "Home Page");
         model.addAttribute("message", "Hi");
         model.addAttribute("type", "success");
-        model.addAttribute("showBottom", false);
 
         if(principal == null)
             return "redirect:/login";
 
         User user = this.userService.getUserByUserName(principal.getName());
         model.addAttribute("user", user);
-
-//        System.out.println("------------HOME--------------");
-//        System.out.println(user);
-//        System.out.println("------------------------------");
 
         if(user.getRole().equals("ROLE_ADMIN") )
             return "redirect:/admin/index";
@@ -45,13 +48,14 @@ public class HomeController {
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("title", "Login Page");
+        model.addAttribute("showSidebar", false);
         return "login";
     }
 
     @GetMapping("/signup")
     public String signUp(Model model) {
         model.addAttribute("title", "Sign Up - Smart Contact");
-        model.addAttribute("user", new User());
+        //model.addAttribute("user", new User());
         model.addAttribute("showLoginButton", 1);
         model.addAttribute("showSideBar", false);
         return "signup";
@@ -62,6 +66,8 @@ public class HomeController {
                                @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
                                Model model,
                                HttpSession session) {
+        System.out.println(user);
+        //return "This is test..!!";
 
         model.addAttribute("showLoginButton", 1);
 
@@ -78,19 +84,12 @@ public class HomeController {
 
             this.userService.save(user);
 
-            model.addAttribute("user", new User());
-
-            session.setAttribute("message", new Message("Successfully Registered.. !! ",
-                    "alert-success !!"));
-            return "signup";
+            return "redirect:/signup";
 
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("user", user);
-            session.setAttribute("message", new Message("Something went wrong.. !! "+e.getMessage(),
-                    "alert-danger !!"));
-            return "signup";
+            return "redirect:/signup";
         }
-
     }
 }
