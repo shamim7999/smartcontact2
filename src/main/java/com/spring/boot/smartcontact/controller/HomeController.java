@@ -25,12 +25,21 @@ public class HomeController {
         model.addAttribute("title", "Home Page");
         model.addAttribute("message", "Hi");
         model.addAttribute("type", "success");
-        model.addAttribute("user", null);
-        if(principal != null) {
-            User user = this.userService.getUserByUserName(principal.getName());
-            model.addAttribute("user", user);
-        }
-        return "home";
+        model.addAttribute("showBottom", false);
+
+        if(principal == null)
+            return "redirect:/login";
+
+        User user = this.userService.getUserByUserName(principal.getName());
+        model.addAttribute("user", user);
+
+//        System.out.println("------------HOME--------------");
+//        System.out.println(user);
+//        System.out.println("------------------------------");
+
+        if(user.getRole().equals("ROLE_ADMIN") )
+            return "redirect:/admin/index";
+        return "redirect:/user/index";
     }
 
     @GetMapping("/login")
@@ -39,21 +48,12 @@ public class HomeController {
         return "login";
     }
 
-    @GetMapping("/test")
-    @ResponseBody
-    public String test() {
-        User user = new User();
-        user.setName("shamim");
-        user.setEmail("shmaim@gmail.com");
-        this.userService.save(user);
-        return "Test working fine";
-    }
-
     @GetMapping("/signup")
     public String signUp(Model model) {
         model.addAttribute("title", "Sign Up - Smart Contact");
         model.addAttribute("user", new User());
         model.addAttribute("showLoginButton", 1);
+        model.addAttribute("showSideBar", false);
         return "signup";
     }
 
@@ -62,10 +62,6 @@ public class HomeController {
                                @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
                                Model model,
                                HttpSession session) {
-
-        System.out.println("-----------------------");
-        System.out.println("Reg: "+user);
-        System.out.println("------------------------");
 
         model.addAttribute("showLoginButton", 1);
 

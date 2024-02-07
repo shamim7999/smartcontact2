@@ -38,6 +38,7 @@ public class MyConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
                         .requestMatchers("/**").permitAll()
+
                         .anyRequest().authenticated()
                 ).formLogin(fom ->
                         fom.loginPage("/login")

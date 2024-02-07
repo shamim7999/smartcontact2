@@ -35,11 +35,12 @@ public class AdminController {
         User user = this.userService.getUserByUserName(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("showSidebar", true);
+        model.addAttribute("showBottom", true);
     }
     @GetMapping("/index")
     public String adminHome(Model model) {
         model.addAttribute("title", "Admin Dashboard");
-        model.addAttribute("showSidebar", true);
+        //model.addAttribute("showSidebar", true);
         return "admin/user_dashboard";
     }
 
@@ -49,12 +50,15 @@ public class AdminController {
 
         Page <Contact> contactList = this.contactService.findAll(currentPage);
         System.out.println(contactList);
+
         model.addAttribute("title", "All Contacts");
         model.addAttribute("contactList", contactList);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", contactList.getTotalPages());
         model.addAttribute("userRole", "ADMIN");
-        model.addAttribute("showSidebar", true);
+        //model.addAttribute("showSidebar", true);
+
+
         return "admin/show_contacts";
     }
 
@@ -70,8 +74,9 @@ public class AdminController {
         String productName = adminProduct.getAdminProductName() + "-" + LocalTime.now();
         adminProduct.setAdminProductName(productName);
         this.adminProductService.save(adminProduct);
-        model.addAttribute("showSidebar", false);
-        return "admin/add_product_form";
+        //model.addAttribute("showSidebar", false);
+
+        return "redirect:/admin/add-product";
     }
 
     @GetMapping("/show-products")
