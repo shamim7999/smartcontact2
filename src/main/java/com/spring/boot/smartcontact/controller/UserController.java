@@ -188,4 +188,12 @@ public class UserController {
     public String profileDetails() {
         return "profile_details";
     }
+
+    @GetMapping("/contact/{cId}")
+    public String contactDetails(@PathVariable("cId") int cId,
+                                 Model model) {
+
+        model.addAttribute("contact", this.contactService.findById(cId));
+        return "show_contact_details";
+    }
 }

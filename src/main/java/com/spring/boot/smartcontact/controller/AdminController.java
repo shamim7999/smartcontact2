@@ -81,4 +81,11 @@ public class AdminController {
         System.out.println(this.adminProductService.findAll());
         return "redirect:/index";
     }
+
+    /////////////////////////// Profile Details ///////////////////////
+
+    @GetMapping("/profile")
+    public String profileDetails() {
+        return "profile_details";
+    }
 }

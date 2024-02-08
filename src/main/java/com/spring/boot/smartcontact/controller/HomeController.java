@@ -22,9 +22,6 @@ public class HomeController {
 
     @ModelAttribute
     public void addCommonAttribute(Model model, Principal principal) {
-        model.addAttribute("user", null);
-        if(principal != null)
-            model.addAttribute("user", this.userService.getUserByUserName(principal.getName()));
         model.addAttribute("showBottom", false);
     }
 
@@ -55,22 +52,16 @@ public class HomeController {
     @GetMapping("/signup")
     public String signUp(Model model) {
         model.addAttribute("title", "Sign Up - Smart Contact");
-        //model.addAttribute("user", new User());
-        model.addAttribute("showLoginButton", 1);
-        model.addAttribute("showSideBar", false);
         return "signup";
     }
 
     @PostMapping("/register")
+    @ResponseBody
     public String registerUser(@Valid @ModelAttribute ("user") User user, BindingResult result,
                                @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
                                Model model,
                                HttpSession session) {
         System.out.println(user);
-        //return "This is test..!!";
-
-        model.addAttribute("showLoginButton", 1);
-
         try {
             if(!agreement) {
                 System.out.println("You haven't agreed to our terms and conditions.");
@@ -84,12 +75,15 @@ public class HomeController {
 
             this.userService.save(user);
 
-            return "redirect:/signup";
+            model.addAttribute("user", user);
+
+
+            return "signup";
 
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("user", user);
-            return "redirect:/signup";
+            return "signup";
         }
     }
 }

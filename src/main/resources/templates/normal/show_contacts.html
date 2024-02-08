@@ -30,7 +30,11 @@
                         <span th:text="${c.name}"></span>
                     </td>
                     <td th:text="${c.phone}">Otto</td>
-                    <td th:text="${c.email}">@mdo</td>
+                    <td>
+                        <a href="#" th:href="@{'/user/contact/'+${c.cId}}">
+                            <span th:text="${c.email}"></span>
+                        </a>
+                    </td>
                     <td th:text="${c.work}">@mdo</td>
                     <td th:text="${c.description}">@mdo</td>
                     <td class="inliner">
