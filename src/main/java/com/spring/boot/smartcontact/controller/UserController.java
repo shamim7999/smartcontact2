@@ -194,6 +194,7 @@ public class UserController {
                                  Model model) {
 
         model.addAttribute("contact", this.contactService.findById(cId));
+        System.out.println(this.contactService.findById(cId));
         return "show_contact_details";
     }
 }

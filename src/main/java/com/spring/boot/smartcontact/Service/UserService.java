@@ -31,7 +31,7 @@ public class UserService {
     public void save(User user) {
 
         user.setEnabled(true);
-        user.setRole("ROLE_ADMIN");
+        user.setRole("ROLE_USER");
         user.setImageUrl("profile.jpg");
         user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
 

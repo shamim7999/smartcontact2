@@ -63,4 +63,5 @@ section .card {
     height: 35px;
     width: 35px;
     object-fit: cover;
+    border-radius: 50%;
 }

@@ -56,7 +56,6 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    @ResponseBody
     public String registerUser(@Valid @ModelAttribute ("user") User user, BindingResult result,
                                @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
                                Model model,
