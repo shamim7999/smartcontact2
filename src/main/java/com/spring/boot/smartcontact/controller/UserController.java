@@ -36,10 +36,13 @@ public class UserController {
     }
 
     @ModelAttribute
-    public void addCommonAttribute(Model model, Principal principal) {
+    public String addCommonAttribute(Model model, Principal principal) {
         User user = this.userService.getUserByUserName(principal.getName());
+        if(!user.isEnabled())
+            return "redirect:/logout";
         model.addAttribute("user", user);
         model.addAttribute("showSidebar", true);
+        return null;
     }
 
     @GetMapping("/index")
