@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>User - Dashboard</title>
+</head>
+<body>
+<section style="padding: 30px;">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="text-center">Your Contacts</h1>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="u : ${userList}">
+                    <th scope="row" th:text="${u.id}">1</th>
+
+                    <td>
+                        <img class="my_profile_picture" src="" th:src="@{'/image/'+${u.imageUrl}}" alt="No Image">
+                        <span th:text="${u.name}"></span>
+                    </td>
+                    <td th:text="${u.email}">@mdo</td>
+                    <td th:text="${u.role}">@mdo</td>
+                    <td class="inliner">
+                        <form
+                              th:action="@{${u.enabled == true ? '/admin/suspend-user/' : '/admin/enable-user/' }+${u.id}}"
+                              method="post"
+                            >
+                            <button type="submit" class="btn btn-sm" th:classappend="${u.enabled == true ? 'btn-danger' : 'btn-success'}">
+                                <span th:text="${u.enabled == true ? 'Suspend' : 'Enable'}"></span>
+                            </button>
+                        </form>
+
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <div th:replace="page::my_contact_page"></div>
+
+        </div>
+    </div>
+</section>
+</body>
+</html>

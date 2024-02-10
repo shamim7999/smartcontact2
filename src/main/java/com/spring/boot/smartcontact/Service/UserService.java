@@ -4,6 +4,9 @@ import com.spring.boot.smartcontact.Repository.UserRepository;
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -28,11 +32,17 @@ public class UserService {
         return this.userRepository.getUserByUserName(userEmail);
     }
 
+    public Page<User> findAllUser(Integer currentPage) {
+        Pageable pageable = PageRequest.of(currentPage, 2);
+        return userRepository.findAllUser(pageable);
+    }
+
     public void save(User user) {
 
         user.setEnabled(true);
         user.setRole("ROLE_USER");
-        user.setImageUrl("profile.jpg");
+        if(user.getImageUrl().isEmpty())
+            user.setImageUrl("profile.jpg");
         user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
 
         System.out.println("User: "+user);
@@ -41,6 +51,20 @@ public class UserService {
         this.userRepository.save(user);
     }
 
+    public User findUserById(int id) {
+        return this.userRepository.findById(id).get();
+    }
+    public void enableUserById(int id) {
+        User user = findUserById(id);
+        user.setEnabled(true);
+        this.userRepository.save(user);
+    }
+    public void suspendUserById(int id) {
+        User user = findUserById(id);
+        user.setEnabled(false);
+        this.userRepository.save(user);
+        System.out.println("USER: "+user);
+    }
     public String encode(String userPassword) {
         return this.bCryptPasswordEncoder.encode(userPassword);
     }

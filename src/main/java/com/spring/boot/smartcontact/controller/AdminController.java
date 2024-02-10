@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalTime;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -34,7 +35,6 @@ public class AdminController {
     public void addCommonAttribute(Model model, Principal principal) {
         User user = this.userService.getUserByUserName(principal.getName());
         model.addAttribute("user", user);
-
         model.addAttribute("showSidebar", true);
     }
     @GetMapping("/index")
@@ -44,22 +44,32 @@ public class AdminController {
     }
 
     // Show Contacts Handler
-    @GetMapping("/show-contacts/{page}")
+    @GetMapping("/show-users/{page}")
     public String showContacts(@PathVariable("page") Integer currentPage, Model model) {
 
-        Page <Contact> contactList = this.contactService.findAll(currentPage);
-        System.out.println(contactList);
+        Page <User> userList = this.userService.findAllUser(currentPage);
 
-        model.addAttribute("title", "All Contacts");
-        model.addAttribute("contactList", contactList);
+        model.addAttribute("title",  "All Contacts");
+        model.addAttribute("userList", userList);
         model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", contactList.getTotalPages());
+        model.addAttribute("totalPages", userList.getTotalPages());
         model.addAttribute("userRole", "ADMIN");
 
 
-        return "admin/show_contacts";
+        return "admin/show_users";
     }
 
+    @PostMapping("/suspend-user/{id}")
+    public String suspendUser(@PathVariable("id") int id) {
+        this.userService.suspendUserById(id);
+        return "redirect:/admin/show-users/0";
+    }
+
+    @PostMapping("/enable-user/{id}")
+    public String enableUser(@PathVariable("id") int id) {
+        this.userService.enableUserById(id);
+        return "redirect:/admin/show-users/0";
+    }
     @GetMapping("/add-product")
     public String addProduct(Model model) {
         model.addAttribute("showSidebar", false);

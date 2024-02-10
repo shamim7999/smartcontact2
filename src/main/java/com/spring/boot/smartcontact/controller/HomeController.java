@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.time.LocalTime;
 
 @Controller
 public class HomeController {
@@ -23,6 +25,7 @@ public class HomeController {
     @ModelAttribute
     public void addCommonAttribute(Model model, Principal principal) {
         model.addAttribute("showBottom", false);
+        model.addAttribute("time", LocalTime.now());
     }
 
     @GetMapping({"/", "/home"})
@@ -57,9 +60,12 @@ public class HomeController {
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute ("user") User user, BindingResult result,
+                               @RequestParam("profileImage") MultipartFile file,
                                @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
                                Model model,
                                HttpSession session) {
+        if(!file.isEmpty())
+            user.setImageUrl(file.getOriginalFilename());
         System.out.println(user);
         try {
             if(!agreement) {

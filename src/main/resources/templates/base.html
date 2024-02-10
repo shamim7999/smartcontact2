@@ -63,8 +63,10 @@
 
 <div th:if="${user != null && showSidebar == true}" class="sidebar mt-2" th:style="${user.role == 'ROLE_ADMIN' ? 'padding-top: 48px;' : 'padding-top: 78px;'}">
     <a href="#" th:href="@{/}" class="item"><i class="fas fa-home"></i> Home</a>
-    <a th:href="${user.role == 'ROLE_ADMIN' ? '/admin/show-contacts/0' : '/user/show-contacts/0'}" class="item">
-        <i class="fas fa-id-card-alt"></i> View Contacts
+    <a th:href="${user.role == 'ROLE_ADMIN' ? '/admin/show-users/0' : '/user/show-contacts/0'}" class="item">
+        <i class="fas fa-id-card-alt"></i>
+         <span th:text="${user.role == 'ROLE_ADMIN' ? 'Show Users' : 'Show Contacts'}">
+         </span>
     </a>
 
     <a href="#" th:href="${user.role == 'ROLE_ADMIN' ? '' : '/user/add-contact'}"

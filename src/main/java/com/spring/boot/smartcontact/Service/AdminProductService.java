@@ -11,15 +11,9 @@ import java.util.List;
 @Service
 public class AdminProductService {
     private final AdminProductRepository adminProductRepository;
-    private final UserRepository userRepository;
-    private final ContactRepository contactRepository;
 
-    public AdminProductService(AdminProductRepository adminProductRepository,
-                               UserRepository userRepository,
-                               ContactRepository contactRepository) {
+    public AdminProductService(AdminProductRepository adminProductRepository) {
         this.adminProductRepository = adminProductRepository;
-        this.userRepository = userRepository;
-        this.contactRepository = contactRepository;
     }
 
     public void save(AdminProduct adminProduct) {

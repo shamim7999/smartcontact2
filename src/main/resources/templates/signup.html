@@ -13,7 +13,7 @@
                     <img width="100px" th:src="@{/image/membership.png}" alt="No Image..">
                 </div>
                 <h1 class="text-center">Register Here !!</h1>
-                <form novalidate="novalidate" th:action="@{/register}" method="post">
+                <form novalidate="novalidate" th:action="@{/register}" method="post" enctype="multipart/form-data">
                     <!--                    name field-->
                     <div class="form-group mb-3">
                         <label for="name">Your Name</label>
@@ -49,7 +49,9 @@
                                   placeholder="Enter something about yourself.."
                                   rows="10" name="about"></textarea>
                     </div>
-
+                    <div class="custom-file">
+                        <input type="file" name="profileImage">
+                    </div>
                     <!--                                        Terms and Condition Agreement-->
                     <div class="form-group form-check text-center">
 
