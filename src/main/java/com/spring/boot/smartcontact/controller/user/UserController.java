@@ -1,9 +1,9 @@
 package com.spring.boot.smartcontact.controller.user;
 
-import com.spring.boot.smartcontact.Service.AdminProductService;
-import com.spring.boot.smartcontact.Service.ContactService;
-import com.spring.boot.smartcontact.Service.ProductService;
-import com.spring.boot.smartcontact.Service.UserService;
+import com.spring.boot.smartcontact.service.AdminProductService;
+import com.spring.boot.smartcontact.service.ContactService;
+import com.spring.boot.smartcontact.service.ProductService;
+import com.spring.boot.smartcontact.service.UserService;
 import com.spring.boot.smartcontact.model.AdminProduct;
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.Product;
@@ -12,9 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,96 +59,6 @@ public class UserController {
         model.addAttribute("adminProductList", adminProductList);
         model.addAttribute("showSidebar", true);
         return "user_dashboard";
-    }
-
-    @GetMapping("/add-contact")
-    public String addContact(Model model) {
-        User user = (User) model.getAttribute("user");
-        if(!user.isEnabled())
-            return "redirect:/logout";
-
-        model.addAttribute("contact", new Contact());
-        model.addAttribute("title", "Add Contact");
-        model.addAttribute("showSidebar", true);
-        return "normal/add_contact_form";
-    }
-
-    @PostMapping("/process-contact")
-    public String processContact(@ModelAttribute("contact") Contact contact,
-                                 @RequestParam("profileImage") MultipartFile file,
-                                 Principal principal, Model model) {
-        User user = (User) model.getAttribute("user");
-        if(!user.isEnabled())
-            return "redirect:/logout";
-
-        model.addAttribute("message",  "Successfully added!!");
-        model.addAttribute("type", "success");
-        model.addAttribute("showSidebar", true);
-        userService.loadImageAndSave(contact, file, principal.getName());
-
-        return "normal/add_contact_form";
-    }
-
-    @GetMapping("/show-contacts")
-    public String showContactsByPage(@RequestParam("page") Optional<Integer> page, Model model, Principal principal) {
-        User user = (User) model.getAttribute("user");
-        if(!user.isEnabled())
-            return "redirect:/logout";
-
-        int currentPage = page.orElse(1);
-        Page <Contact> contactList = contactService.getContactsByUserId(user.getId(), currentPage-1);
-        System.out.println(contactList);
-
-        model.addAttribute("title", "All Contacts");
-        model.addAttribute("contactList", contactList);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", contactList.getTotalPages());
-        model.addAttribute("showSidebar", true);
-        return "normal/show_contacts";
-    }
-
-    @PostMapping("/update-contact/{id}")
-    public String updateContact(@PathVariable("id") Integer contactId, Model model) {
-        User user = (User) model.getAttribute("user");
-        if(!user.isEnabled())
-            return "redirect:/logout";
-
-        model.addAttribute("contact", contactService.findById(contactId));
-        model.addAttribute("showSidebar", true);
-        return "normal/update_contact";
-    }
-
-    @PostMapping("/process-update-contact")
-    public String processUpdateContact(@ModelAttribute("contact") Contact contact,
-                                       @RequestParam("profileImage") MultipartFile file,
-                                       Principal principal,
-                                       Model model) {
-
-        User user = (User) model.getAttribute("user");
-        if(!user.isEnabled())
-            return "redirect:/logout";
-
-        model.addAttribute("showSidebar", true);
-        contact.setUser(user);
-        if(!file.isEmpty())
-            contact.setImage(file.getOriginalFilename());
-        System.out.println(contact);
-        contactService.save(contact);
-
-        return "redirect:/user/show-contacts";
-    }
-
-    @PostMapping("/delete-contact/{id}")
-    public String deleteContact(@PathVariable("id") Integer contactId, Model model) {
-        Contact contact = contactService.findById(contactId);
-        User user = (User) model.getAttribute("user");
-        if(!user.isEnabled())
-            return "redirect:/logout";
-
-        model.addAttribute("showSidebar", true);
-        user.getContacts().remove(contact);
-        userService.save(user);
-        return "redirect:/user/show-contacts";
     }
 
 
@@ -231,18 +139,5 @@ public class UserController {
 
         model.addAttribute("showSidebar", true);
         return "profile_details";
-    }
-
-    @GetMapping("/contact/{cId}")
-    public String contactDetails(@PathVariable("cId") int cId,
-                                 Model model) {
-        User user = (User) model.getAttribute("user");
-        if(!user.isEnabled())
-            return "redirect:/logout";
-
-        model.addAttribute("contact", contactService.findById(cId));
-        model.addAttribute("showSidebar", true);
-        System.out.println(contactService.findById(cId));
-        return "show_contact_details";
     }
 }

@@ -1,7 +1,6 @@
 package com.spring.boot.smartcontact.controller.home;
 
-import com.spring.boot.smartcontact.Service.UserService;
-import com.spring.boot.smartcontact.helper.Message;
+import com.spring.boot.smartcontact.service.UserService;
 import com.spring.boot.smartcontact.model.User;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;

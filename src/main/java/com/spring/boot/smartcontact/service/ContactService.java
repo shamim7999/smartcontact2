@@ -1,6 +1,6 @@
-package com.spring.boot.smartcontact.Service;
+package com.spring.boot.smartcontact.service;
 
-import com.spring.boot.smartcontact.Repository.ContactRepository;
+import com.spring.boot.smartcontact.repository.ContactRepository;
 import com.spring.boot.smartcontact.model.Contact;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

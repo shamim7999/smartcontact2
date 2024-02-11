@@ -1,13 +1,11 @@
-package com.spring.boot.smartcontact.Service;
+package com.spring.boot.smartcontact.service;
 
-import com.spring.boot.smartcontact.Repository.ProductRepository;
+import com.spring.boot.smartcontact.repository.ProductRepository;
 import com.spring.boot.smartcontact.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProductService {

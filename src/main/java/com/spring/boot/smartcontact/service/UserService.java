@@ -1,8 +1,8 @@
-package com.spring.boot.smartcontact.Service;
+package com.spring.boot.smartcontact.service;
 
-import com.spring.boot.smartcontact.Repository.AdminProductRepository;
-import com.spring.boot.smartcontact.Repository.ProductRepository;
-import com.spring.boot.smartcontact.Repository.UserRepository;
+import com.spring.boot.smartcontact.repository.AdminProductRepository;
+import com.spring.boot.smartcontact.repository.ProductRepository;
+import com.spring.boot.smartcontact.repository.UserRepository;
 import com.spring.boot.smartcontact.model.AdminProduct;
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.Product;

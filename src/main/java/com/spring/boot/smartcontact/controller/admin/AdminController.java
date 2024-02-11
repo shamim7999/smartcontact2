@@ -1,11 +1,9 @@
 package com.spring.boot.smartcontact.controller.admin;
 
 
-import com.spring.boot.smartcontact.Service.AdminProductService;
-import com.spring.boot.smartcontact.Service.ContactService;
-import com.spring.boot.smartcontact.Service.UserService;
+import com.spring.boot.smartcontact.service.AdminProductService;
+import com.spring.boot.smartcontact.service.UserService;
 import com.spring.boot.smartcontact.model.AdminProduct;
-import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
