@@ -63,7 +63,7 @@
 
 <div th:if="${user != null && showSidebar == true}" class="sidebar mt-2" th:style="${user.role == 'ROLE_ADMIN' ? 'padding-top: 48px;' : 'padding-top: 78px;'}">
     <a href="#" th:href="@{/}" class="item"><i class="fas fa-home"></i> Home</a>
-    <a th:href="${user.role == 'ROLE_ADMIN' ? '/admin/show-users/0' : '/user/show-contacts/0'}" class="item">
+    <a th:href="${user.role == 'ROLE_ADMIN' ? '/admin/show-users' : '/user/show-contacts'}" class="item">
         <i class="fas fa-id-card-alt"></i>
          <span th:text="${user.role == 'ROLE_ADMIN' ? 'Show Users' : 'Show Contacts'}">
          </span>
@@ -75,7 +75,7 @@
     <a href="#" th:href="${user.role == 'ROLE_ADMIN' ? '/admin/add-product' : ''}"
        class="item" th:if="${user.role == 'ROLE_ADMIN'}"><i class="fas fa-pencil-alt"></i> Add Product</a>
 
-    <a href="#" th:href="${user.role == 'ROLE_ADMIN' ? '' : '/user/show-products/0'}"
+    <a href="#" th:href="${user.role == 'ROLE_ADMIN' ? '' : '/user/show-products'}"
        class="item"><i class="fa-solid fa-eye"></i> Show Products</a>
 
     <a href="#" class="item" th:href="${user.role == 'ROLE_ADMIN' ? '/admin/profile' : '/user/profile' }">

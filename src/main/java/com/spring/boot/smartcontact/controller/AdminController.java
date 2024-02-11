@@ -15,20 +15,18 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private final AdminProductService adminProductService;
     private final UserService userService;
-    private final ContactService contactService;
 
     public AdminController(AdminProductService adminProductService,
-                           UserService userService,
-                           ContactService contactService) {
+                           UserService userService) {
         this.adminProductService = adminProductService;
         this.userService = userService;
-        this.contactService = contactService;
     }
 
     @ModelAttribute
@@ -44,20 +42,20 @@ public class AdminController {
     }
 
     // Show Contacts Handler
-    @GetMapping("/show-users/{page}")
-    public String showContacts(@PathVariable("page") Integer currentPage, Model model) {
-
+    @GetMapping("/show-users")
+    public String showContacts(@RequestParam("page") Optional <Integer> page, Model model) {
+        int currentPage = page.orElse(0);
         Page <User> userList = this.userService.findAllUser(currentPage);
 
         model.addAttribute("title",  "All Contacts");
         model.addAttribute("userList", userList);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", userList.getTotalPages());
-        model.addAttribute("userRole", "ADMIN");
 
 
         return "admin/show_users";
     }
+
 
     @PostMapping("/suspend-user/{id}")
     public String suspendUser(@PathVariable("id") int id) {

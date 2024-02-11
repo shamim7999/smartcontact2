@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -72,18 +73,17 @@ public class UserController {
         return "normal/add_contact_form";
     }
 
-    // Show Contacts Handler
-    @GetMapping("/show-contacts/{page}")
-    public String showContacts(@PathVariable("page") Integer currentPage, Model model, Principal principal) {
+    @GetMapping("/show-contacts")
+    public String showContactsByPage(@RequestParam("page") Optional<Integer> page, Model model, Principal principal) {
         User user = (User) model.getAttribute("user");
-
+        int currentPage = page.orElse(0);
         Page <Contact> contactList = this.contactService.getContactsByUserId(user.getId(), currentPage);
         System.out.println(contactList);
+
         model.addAttribute("title", "All Contacts");
         model.addAttribute("contactList", contactList);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", contactList.getTotalPages());
-        model.addAttribute("userRole", "USER");
         return "normal/show_contacts";
     }
 
@@ -123,13 +123,12 @@ public class UserController {
 
 
 
-    @GetMapping("/show-products/{page}")
-    public String showProducts(@PathVariable("page") Integer currentPage, Model model) {
+    @GetMapping("/show-products")
+    public String showProducts(@RequestParam("page") Optional<Integer> page, Model model) {
 
-
+        int currentPage = page.orElse(0);
 
         User user = (User) model.getAttribute("user");
-        //List<Product> productList = this.productRepository.findAll();
         Page<Product> productList = this.productService.getProductsByUserId(user.getId(), currentPage);
 
         model.addAttribute("title", "All Products");
