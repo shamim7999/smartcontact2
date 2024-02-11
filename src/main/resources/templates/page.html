@@ -8,15 +8,15 @@
 <!--            Pagination Part-->
 <nav aria-label="Page Navigation Example" th:fragment="my_contact_page">
     <ul class="pagination">
-        <li th:classappend="${(currentPage > 0) ? '' : 'disabled'}" class="page-item">
+        <li th:classappend="${(currentPage > 1) ? '' : 'disabled'}" class="page-item">
             <a class="page-link" th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-users?page=' + (currentPage - 1) : '/user/show-contacts?page=' + (currentPage - 1)}}">Prev</a>
         </li>
 
-        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i - 1 ? 'active':''}" class="page-item">
-            <a class="page-link" th:if="${i > 0}" th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-users?page=' + (i - 1) : '/user/show-contacts?page=' + (i - 1)}}"><span th:text="${i}"></span></a>
+        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i ? 'active':''}" class="page-item">
+            <a class="page-link" th:if="${i > 0}" th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-users?page=' + (i) : '/user/show-contacts?page=' + (i)}}"><span th:text="${i}"></span></a>
         </li>
 
-        <li th:classappend="${currentPage + 1 >= totalPages ? 'disabled':''}" class="page-item">
+        <li th:classappend="${currentPage >= totalPages ? 'disabled':''}" class="page-item">
             <a class="page-link"
                th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-users?page=' + (currentPage + 1) : '/user/show-contacts?page=' + (currentPage + 1)}}">Next</a>
         </li>
@@ -26,15 +26,15 @@
 
 <nav aria-label="Page Navigation Example" th:fragment="my_product_page">
     <ul class="pagination">
-        <li th:classappend="${(currentPage > 0) ? '' : 'disabled'}" class="page-item">
+        <li th:classappend="${(currentPage > 1) ? '' : 'disabled'}" class="page-item">
             <a class="page-link" th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-products?page=' + (currentPage - 1) : '/user/show-products?page=' + (currentPage - 1)}}">Prev</a>
         </li>
 
-        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i - 1 ? 'active':''}" class="page-item">
-            <a class="page-link" th:if="${i > 0}" th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-products?page=' + (i - 1) : '/user/show-products?page=' + (i - 1)}}"><span th:text="${i}"></span></a>
+        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i ? 'active':''}" class="page-item">
+            <a class="page-link" th:if="${i > 0}" th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-products?page=' + (i) : '/user/show-products?page=' + (i)}}"><span th:text="${i}"></span></a>
         </li>
 
-        <li th:classappend="${currentPage + 1 >= totalPages ? 'disabled':''}" class="page-item">
+        <li th:classappend="${currentPage  >= totalPages ? 'disabled':''}" class="page-item">
             <a class="page-link"
                th:href="@{${user.role == 'ROLE_ADMIN' ? '/admin/show-products?page=' + (currentPage + 1) : '/user/show-products?page=' + (currentPage + 1)}}">Next</a>
         </li>

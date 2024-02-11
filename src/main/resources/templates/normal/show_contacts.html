@@ -41,7 +41,7 @@
                         <form method="post" th:action="@{'/user/delete-contact/'+${c.cId}}">
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
-                        <form th:if="${userRole == 'USER'}" method="post" th:action="@{'/user/update-contact/'+${c.cId}}">
+                        <form th:if="${user.role == 'ROLE_USER'}" method="post" th:action="@{'/user/update-contact/'+${c.cId}}">
                             <button type="submit" class="btn btn-primary btn-sm">Update</button>
                         </form>
                     </td>

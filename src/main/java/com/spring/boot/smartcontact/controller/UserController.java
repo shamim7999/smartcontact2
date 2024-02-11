@@ -76,8 +76,8 @@ public class UserController {
     @GetMapping("/show-contacts")
     public String showContactsByPage(@RequestParam("page") Optional<Integer> page, Model model, Principal principal) {
         User user = (User) model.getAttribute("user");
-        int currentPage = page.orElse(0);
-        Page <Contact> contactList = this.contactService.getContactsByUserId(user.getId(), currentPage);
+        int currentPage = page.orElse(1);
+        Page <Contact> contactList = this.contactService.getContactsByUserId(user.getId(), currentPage-1);
         System.out.println(contactList);
 
         model.addAttribute("title", "All Contacts");
@@ -126,10 +126,10 @@ public class UserController {
     @GetMapping("/show-products")
     public String showProducts(@RequestParam("page") Optional<Integer> page, Model model) {
 
-        int currentPage = page.orElse(0);
+        int currentPage = page.orElse(1);
 
         User user = (User) model.getAttribute("user");
-        Page<Product> productList = this.productService.getProductsByUserId(user.getId(), currentPage);
+        Page<Product> productList = this.productService.getProductsByUserId(user.getId(), currentPage-1);
 
         model.addAttribute("title", "All Products");
         model.addAttribute("productList", productList);
