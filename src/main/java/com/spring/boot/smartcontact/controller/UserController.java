@@ -166,24 +166,8 @@ public class UserController {
     }
     @PostMapping("/add-multiple-products")
     public String addMultipleProduct(@RequestParam("dropDownList") List<Integer> itemsIds, Model model) {
-        //List<Product> productList = new ArrayList<>();
-        Product product = new Product();
-
         User user = (User) model.getAttribute("user");
-
-        for(Integer id : itemsIds) {
-            AdminProduct adminProduct = this.adminProductService.findById(id);
-            product.setProductId(adminProduct.getAdminProductId());
-            product.setProductName(adminProduct.getAdminProductName());
-            product.setUser(user);
-
-            //productList.add(product);
-            this.productService.save(product);
-
-            adminProduct.setAdminProductStatus(1);
-            this.adminProductService.save(adminProduct);
-        }
-
+        this.userService.saveUserProduct(user, itemsIds);
         return "redirect:/user/index";
     }
     /////////////////////////// Profile Details ///////////////////////

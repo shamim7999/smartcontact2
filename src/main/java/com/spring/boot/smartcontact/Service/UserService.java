@@ -1,7 +1,11 @@
 package com.spring.boot.smartcontact.Service;
 
+import com.spring.boot.smartcontact.Repository.AdminProductRepository;
+import com.spring.boot.smartcontact.Repository.ProductRepository;
 import com.spring.boot.smartcontact.Repository.UserRepository;
+import com.spring.boot.smartcontact.model.AdminProduct;
 import com.spring.boot.smartcontact.model.Contact;
+import com.spring.boot.smartcontact.model.Product;
 import com.spring.boot.smartcontact.model.User;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
@@ -23,9 +27,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    private final AdminProductRepository adminProductRepository;
+
+    private final ProductRepository productRepository;
+
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+                       AdminProductRepository adminProductRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.adminProductRepository = adminProductRepository;
+        this.productRepository = productRepository;
     }
 
     public User getUserByUserName(String userEmail) {
@@ -49,6 +60,22 @@ public class UserService {
 
 
         this.userRepository.save(user);
+    }
+
+    public void saveUserProduct(User user, List<Integer> itemsIds) {
+        Product product = new Product();
+
+        for(Integer id : itemsIds) {
+            AdminProduct adminProduct = this.adminProductRepository.findById(id).get();
+            product.setProductId(adminProduct.getAdminProductId());
+            product.setProductName(adminProduct.getAdminProductName());
+            product.setUser(user);
+
+            this.productRepository.save(product);
+
+            adminProduct.setAdminProductStatus(1);
+            this.adminProductRepository.save(adminProduct);
+        }
     }
 
     public User findUserById(int id) {
