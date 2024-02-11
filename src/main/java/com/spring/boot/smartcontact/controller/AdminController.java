@@ -31,7 +31,7 @@ public class AdminController {
 
     @ModelAttribute
     public void addCommonAttribute(Model model, Principal principal) {
-        User user = this.userService.getUserByUserName(principal.getName());
+        User user = userService.getUserByUserName(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("showSidebar", true);
     }
@@ -44,8 +44,8 @@ public class AdminController {
     // Show Contacts Handler
     @GetMapping("/show-users")
     public String showContacts(@RequestParam("page") Optional <Integer> page, Model model) {
-        int currentPage = page.orElse(0);
-        Page <User> userList = this.userService.findAllUser(currentPage);
+        int currentPage = page.orElse(1);
+        Page <User> userList = userService.findAllUser(currentPage-1);
 
         model.addAttribute("title",  "All Contacts");
         model.addAttribute("userList", userList);
@@ -59,14 +59,14 @@ public class AdminController {
 
     @PostMapping("/suspend-user/{id}")
     public String suspendUser(@PathVariable("id") int id) {
-        this.userService.suspendUserById(id);
-        return "redirect:/admin/show-users/0";
+        userService.suspendUserById(id);
+        return "redirect:/admin/show-users";
     }
 
     @PostMapping("/enable-user/{id}")
     public String enableUser(@PathVariable("id") int id) {
-        this.userService.enableUserById(id);
-        return "redirect:/admin/show-users/0";
+        userService.enableUserById(id);
+        return "redirect:/admin/show-users";
     }
     @GetMapping("/add-product")
     public String addProduct(Model model) {
@@ -79,14 +79,14 @@ public class AdminController {
                                  Model model) {
         String productName = adminProduct.getAdminProductName() + "-" + LocalTime.now();
         adminProduct.setAdminProductName(productName);
-        this.adminProductService.save(adminProduct);
+        adminProductService.save(adminProduct);
 
         return "redirect:/admin/add-product";
     }
 
     @GetMapping("/show-products")
     public String showProducts() {
-        System.out.println(this.adminProductService.findAll());
+        System.out.println(adminProductService.findAll());
         return "redirect:/index";
     }
 

@@ -49,7 +49,7 @@ public class UserController {
     @GetMapping("/index")
     public String dashBoard(Model model) {
         model.addAttribute("title", "User Dashboard");
-        List<AdminProduct> adminProductList = this.adminProductService.findAllByAdminStatusProductSetToZero();
+        List<AdminProduct> adminProductList = adminProductService.findAllByAdminStatusProductSetToZero();
         model.addAttribute("adminProductList", adminProductList);
         return "user_dashboard";
     }
@@ -77,7 +77,7 @@ public class UserController {
     public String showContactsByPage(@RequestParam("page") Optional<Integer> page, Model model, Principal principal) {
         User user = (User) model.getAttribute("user");
         int currentPage = page.orElse(1);
-        Page <Contact> contactList = this.contactService.getContactsByUserId(user.getId(), currentPage-1);
+        Page <Contact> contactList = contactService.getContactsByUserId(user.getId(), currentPage-1);
         System.out.println(contactList);
 
         model.addAttribute("title", "All Contacts");
@@ -89,7 +89,7 @@ public class UserController {
 
     @PostMapping("/update-contact/{id}")
     public String updateContact(@PathVariable("id") Integer contactId, Model model) {
-        model.addAttribute("contact", this.contactService.findById(contactId));
+        model.addAttribute("contact", contactService.findById(contactId));
         return "normal/update_contact";
     }
 
@@ -106,16 +106,16 @@ public class UserController {
         System.out.println(contact);
         this.contactService.save(contact);
 
-        return "redirect:/user/show-contacts/0";
+        return "redirect:/user/show-contacts";
     }
 
     @PostMapping("/delete-contact/{id}")
     public String deleteContact(@PathVariable("id") Integer contactId, Model model) {
-        Contact contact = this.contactService.findById(contactId);
+        Contact contact = contactService.findById(contactId);
         User user = (User) model.getAttribute("user");
         user.getContacts().remove(contact);
-        this.userService.save(user);
-        return "redirect:/user/show-contacts/0";
+        userService.save(user);
+        return "redirect:/user/show-contacts";
     }
 
 
@@ -129,7 +129,7 @@ public class UserController {
         int currentPage = page.orElse(1);
 
         User user = (User) model.getAttribute("user");
-        Page<Product> productList = this.productService.getProductsByUserId(user.getId(), currentPage-1);
+        Page<Product> productList = productService.getProductsByUserId(user.getId(), currentPage-1);
 
         model.addAttribute("title", "All Products");
         model.addAttribute("productList", productList);
@@ -143,30 +143,30 @@ public class UserController {
         User user = (User) model.getAttribute("user");
 
         Product product = new Product();
-        AdminProduct adminProduct = this.adminProductService.findById(productId);
+        AdminProduct adminProduct = adminProductService.findById(productId);
 
         product.setProductName(adminProduct.getAdminProductName());
         product.setProductId(productId);
         product.setUser(user);
 
-        this.productService.save(product);
+        productService.save(product);
 
         adminProduct.setAdminProductStatus(1);
-        this.adminProductService.save(adminProduct);
+        adminProductService.save(adminProduct);
 
         return "redirect:/user/index";
     }
 
     @GetMapping("/select-products")
     public String selectProducts(Model model) {
-        List<AdminProduct> adminProductList = this.adminProductService.findAllByAdminStatusProductSetToZero();
+        List<AdminProduct> adminProductList = adminProductService.findAllByAdminStatusProductSetToZero();
         model.addAttribute("adminProductList", adminProductList);
         return "normal/select_products";
     }
     @PostMapping("/add-multiple-products")
     public String addMultipleProduct(@RequestParam("dropDownList") List<Integer> itemsIds, Model model) {
         User user = (User) model.getAttribute("user");
-        this.userService.saveUserProduct(user, itemsIds);
+        userService.saveUserProduct(user, itemsIds);
         return "redirect:/user/index";
     }
     /////////////////////////// Profile Details ///////////////////////
@@ -180,8 +180,8 @@ public class UserController {
     public String contactDetails(@PathVariable("cId") int cId,
                                  Model model) {
 
-        model.addAttribute("contact", this.contactService.findById(cId));
-        System.out.println(this.contactService.findById(cId));
+        model.addAttribute("contact", contactService.findById(cId));
+        System.out.println(contactService.findById(cId));
         return "show_contact_details";
     }
 }
