@@ -1,4 +1,4 @@
-package com.spring.boot.smartcontact.controller;
+package com.spring.boot.smartcontact.controller.home;
 
 import com.spring.boot.smartcontact.Service.UserService;
 import com.spring.boot.smartcontact.helper.Message;

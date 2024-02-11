@@ -1,4 +1,4 @@
-package com.spring.boot.smartcontact.controller;
+package com.spring.boot.smartcontact.controller.user;
 
 import com.spring.boot.smartcontact.Service.AdminProductService;
 import com.spring.boot.smartcontact.Service.ContactService;
@@ -36,28 +36,42 @@ public class UserController {
         this.productService = productService;
     }
 
+//    @ModelAttribute
+//    public String addCommonAttribute(Model model, Principal principal) {
+//        User user = userService.getUserByUserName(principal.getName());
+//        if(!user.isEnabled())
+//            return "redirect:/logout";
+//        model.addAttribute("user", user);
+//        model.addAttribute("showSidebar", true);
+//        return null;
+//    }
     @ModelAttribute
-    public String addCommonAttribute(Model model, Principal principal) {
-        User user = this.userService.getUserByUserName(principal.getName());
-        if(!user.isEnabled())
-            return "redirect:/logout";
-        model.addAttribute("user", user);
-        model.addAttribute("showSidebar", true);
-        return null;
+    public User addCommonAttribute(Principal principal) {
+        return userService.getUserByUserName(principal.getName());
     }
-
     @GetMapping("/index")
     public String dashBoard(Model model) {
+
+        User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
         model.addAttribute("title", "User Dashboard");
         List<AdminProduct> adminProductList = adminProductService.findAllByAdminStatusProductSetToZero();
         model.addAttribute("adminProductList", adminProductList);
+        model.addAttribute("showSidebar", true);
         return "user_dashboard";
     }
 
     @GetMapping("/add-contact")
     public String addContact(Model model) {
+        User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
         model.addAttribute("contact", new Contact());
         model.addAttribute("title", "Add Contact");
+        model.addAttribute("showSidebar", true);
         return "normal/add_contact_form";
     }
 
@@ -65,9 +79,13 @@ public class UserController {
     public String processContact(@ModelAttribute("contact") Contact contact,
                                  @RequestParam("profileImage") MultipartFile file,
                                  Principal principal, Model model) {
+        User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
 
         model.addAttribute("message",  "Successfully added!!");
         model.addAttribute("type", "success");
+        model.addAttribute("showSidebar", true);
         userService.loadImageAndSave(contact, file, principal.getName());
 
         return "normal/add_contact_form";
@@ -76,6 +94,9 @@ public class UserController {
     @GetMapping("/show-contacts")
     public String showContactsByPage(@RequestParam("page") Optional<Integer> page, Model model, Principal principal) {
         User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
         int currentPage = page.orElse(1);
         Page <Contact> contactList = contactService.getContactsByUserId(user.getId(), currentPage-1);
         System.out.println(contactList);
@@ -84,12 +105,18 @@ public class UserController {
         model.addAttribute("contactList", contactList);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", contactList.getTotalPages());
+        model.addAttribute("showSidebar", true);
         return "normal/show_contacts";
     }
 
     @PostMapping("/update-contact/{id}")
     public String updateContact(@PathVariable("id") Integer contactId, Model model) {
+        User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
         model.addAttribute("contact", contactService.findById(contactId));
+        model.addAttribute("showSidebar", true);
         return "normal/update_contact";
     }
 
@@ -100,11 +127,15 @@ public class UserController {
                                        Model model) {
 
         User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
+        model.addAttribute("showSidebar", true);
         contact.setUser(user);
         if(!file.isEmpty())
             contact.setImage(file.getOriginalFilename());
         System.out.println(contact);
-        this.contactService.save(contact);
+        contactService.save(contact);
 
         return "redirect:/user/show-contacts";
     }
@@ -113,6 +144,10 @@ public class UserController {
     public String deleteContact(@PathVariable("id") Integer contactId, Model model) {
         Contact contact = contactService.findById(contactId);
         User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
+        model.addAttribute("showSidebar", true);
         user.getContacts().remove(contact);
         userService.save(user);
         return "redirect:/user/show-contacts";
@@ -129,18 +164,26 @@ public class UserController {
         int currentPage = page.orElse(1);
 
         User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
         Page<Product> productList = productService.getProductsByUserId(user.getId(), currentPage-1);
 
         model.addAttribute("title", "All Products");
         model.addAttribute("productList", productList);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", productList.getTotalPages());
+        model.addAttribute("showSidebar", true);
         return "normal/show_products";
     }
 
     @PostMapping("/add-product")
     public String addProduct(@RequestParam("dropDownList") int productId, Model model) {
         User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
+        model.addAttribute("showSidebar", true);
 
         Product product = new Product();
         AdminProduct adminProduct = adminProductService.findById(productId);
@@ -160,27 +203,45 @@ public class UserController {
     @GetMapping("/select-products")
     public String selectProducts(Model model) {
         List<AdminProduct> adminProductList = adminProductService.findAllByAdminStatusProductSetToZero();
+        User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
         model.addAttribute("adminProductList", adminProductList);
+        model.addAttribute("showSidebar", true);
         return "normal/select_products";
     }
     @PostMapping("/add-multiple-products")
     public String addMultipleProduct(@RequestParam("dropDownList") List<Integer> itemsIds, Model model) {
         User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
+        model.addAttribute("showSidebar", true);
         userService.saveUserProduct(user, itemsIds);
         return "redirect:/user/index";
     }
     /////////////////////////// Profile Details ///////////////////////
 
     @GetMapping("/profile")
-    public String profileDetails() {
+    public String profileDetails(Model model) {
+        User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
+
+        model.addAttribute("showSidebar", true);
         return "profile_details";
     }
 
     @GetMapping("/contact/{cId}")
     public String contactDetails(@PathVariable("cId") int cId,
                                  Model model) {
+        User user = (User) model.getAttribute("user");
+        if(!user.isEnabled())
+            return "redirect:/logout";
 
         model.addAttribute("contact", contactService.findById(cId));
+        model.addAttribute("showSidebar", true);
         System.out.println(contactService.findById(cId));
         return "show_contact_details";
     }

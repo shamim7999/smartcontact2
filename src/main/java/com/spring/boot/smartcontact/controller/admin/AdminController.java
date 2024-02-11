@@ -1,4 +1,4 @@
-package com.spring.boot.smartcontact.controller;
+package com.spring.boot.smartcontact.controller.admin;
 
 
 import com.spring.boot.smartcontact.Service.AdminProductService;
