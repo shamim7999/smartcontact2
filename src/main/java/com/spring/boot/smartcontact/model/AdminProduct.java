@@ -1,62 +1,59 @@
 package com.spring.boot.smartcontact.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class AdminProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "admin_product_id")
-    private int adminProductId;
+    private int id;
+    @NotNull
+    @Size(min = 3, max = 40, message = "Minimum 3 characters.")
+    private String productName;
 
-    @Column(name = "admin_product_name")
-    private String adminProductName;
+    private int productStatus;
 
-    @Column(name = "admin_product_status")
-    private int adminProductStatus;
-
-    public AdminProduct(int adminProductId, String adminProductName, int adminProductStatus) {
-        this.adminProductId = adminProductId;
-        this.adminProductName = adminProductName;
-        this.adminProductStatus = adminProductStatus;
+    public AdminProduct(int id, String productName, int productStatus) {
+        this.id = id;
+        this.productName = productName;
+        this.productStatus = productStatus;
     }
 
     public AdminProduct() {
     }
 
-    public int getAdminProductId() {
-        return adminProductId;
+    public int getId() {
+        return id;
     }
 
-    public void setAdminProductId(int adminProductId) {
-        this.adminProductId = adminProductId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getAdminProductName() {
-        return adminProductName;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setAdminProductName(String adminProductName) {
-        this.adminProductName = adminProductName;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public int getAdminProductStatus() {
-        return adminProductStatus;
+    public int getProductStatus() {
+        return productStatus;
     }
 
-    public void setAdminProductStatus(int adminProductStatus) {
-        this.adminProductStatus = adminProductStatus;
+    public void setProductStatus(int productStatus) {
+        this.productStatus = productStatus;
     }
 
-    @Override
-    public String toString() {
-        return "AdminProduct{" +
-                "adminProductId=" + adminProductId +
-                ", adminProductName='" + adminProductName + '\'' +
-                ", adminProductStatus=" + adminProductStatus +
-                '}';
-    }
+   // @Override
+//    public String toString() {
+//        return "AdminProduct{" +
+//                "id=" + id +
+//                ", productName='" + productName + '\'' +
+//                ", productStatus=" + productStatus +
+//                '}';
+//    }
 }

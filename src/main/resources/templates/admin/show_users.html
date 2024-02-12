@@ -34,7 +34,9 @@
                               th:action="@{${u.enabled == true ? '/admin/suspend-user/' : '/admin/enable-user/' }+${u.id}}"
                               method="post"
                             >
-                            <button type="submit" class="btn btn-sm" th:classappend="${u.enabled == true ? 'btn-danger' : 'btn-success'}">
+                            <button type="submit" class="btn btn-sm" th:classappend="${u.enabled == true ? 'btn-danger' : 'btn-success'}"
+                                th:if="${u.role == 'ROLE_USER'}"
+                            >
                                 <span th:text="${u.enabled == true ? 'Suspend' : 'Enable'}"></span>
                             </button>
                         </form>

@@ -9,9 +9,9 @@
     <div class="text-center">
         <h1>Select Products</h1>
         <form th:action="@{/user/add-multiple-products}" method="post">
-            <select style="display: inline-block;" class="form-control" id="dropDownList" name="dropDownList" multiple="multiple">
+            <select style="display: inline-block;" class="form-control" id="dropDownList" name="dropDownList" multiple="multiple" >
                 <option value="0">select option</option>
-                <option th:each="adminProduct : ${adminProductList}" th:value="${adminProduct.adminProductId}" th:text="${adminProduct.adminProductName}"></option>
+                <option th:each="adminProduct : ${adminProductList}" th:value="${adminProduct.getId()}" th:text="${adminProduct.productName}"></option>
             </select>
             <button type="submit">Save</button>
         </form>

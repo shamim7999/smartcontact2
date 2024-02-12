@@ -48,7 +48,7 @@
                         <form th:action="@{/user/add-product}" method="post">
                             <select style="display: inline-block;" class="form-control" id="dropDownList" name="dropDownList">
                                 <option value="0">select option</option>
-                                <option th:each="adminProduct : ${adminProductList}" th:value="${adminProduct.adminProductId}" th:text="${adminProduct.adminProductName}"></option>
+                                <option th:each="adminProduct : ${adminProductList}" th:value="${adminProduct.id}" th:text="${adminProduct.productName}"></option>
                             </select>
                             <button type="submit">Save</button>
                         </form>

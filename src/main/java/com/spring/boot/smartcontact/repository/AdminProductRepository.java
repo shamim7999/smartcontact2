@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface AdminProductRepository extends JpaRepository<AdminProduct, Integer> {
 
-    @Query(value = "Select * from admin_product where admin_product_status = 0", nativeQuery = true)
+    @Query(value = "Select * from admin_product where product_status = 0", nativeQuery = true)
     List<AdminProduct> findAllByAdminStatusProductSetToZero();
 }

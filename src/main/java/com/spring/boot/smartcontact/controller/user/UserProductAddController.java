@@ -15,13 +15,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user")
-public class ProductAddController {
+public class UserProductAddController {
     private final UserService userService;
     private final AdminProductService adminProductService;
     private final ProductService productService;
 
-    public ProductAddController(UserService userService, AdminProductService adminProductService,
-                                ProductService productService) {
+    public UserProductAddController(UserService userService, AdminProductService adminProductService,
+                                    ProductService productService) {
         this.userService = userService;
         this.adminProductService = adminProductService;
         this.productService = productService;
@@ -43,13 +43,13 @@ public class ProductAddController {
         Product product = new Product();
         AdminProduct adminProduct = adminProductService.findById(productId);
 
-        product.setProductName(adminProduct.getAdminProductName());
+        product.setProductName(adminProduct.getProductName());
         product.setProductId(productId);
         product.setUser(user);
 
         productService.save(product);
 
-        adminProduct.setAdminProductStatus(1);
+        adminProduct.setProductStatus(1);
         adminProductService.save(adminProduct);
 
         return "redirect:/user/index";

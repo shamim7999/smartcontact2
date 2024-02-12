@@ -17,11 +17,11 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
-public class ProductShowController {
+public class UserProductShowController {
     private final UserService userService;
     private final ProductService productService;
 
-    public ProductShowController(UserService userService, ProductService productService) {
+    public UserProductShowController(UserService userService, ProductService productService) {
         this.userService = userService;
         this.productService = productService;
     }

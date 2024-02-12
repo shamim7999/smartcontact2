@@ -67,13 +67,13 @@ public class UserService {
 
         for(Integer id : itemsIds) {
             AdminProduct adminProduct = this.adminProductRepository.findById(id).get();
-            product.setProductId(adminProduct.getAdminProductId());
-            product.setProductName(adminProduct.getAdminProductName());
+            product.setProductId(adminProduct.getId());
+            product.setProductName(adminProduct.getProductName());
             product.setUser(user);
 
             this.productRepository.save(product);
 
-            adminProduct.setAdminProductStatus(1);
+            adminProduct.setProductStatus(1);
             this.adminProductRepository.save(adminProduct);
         }
     }
