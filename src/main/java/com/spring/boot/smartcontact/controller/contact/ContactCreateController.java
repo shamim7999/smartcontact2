@@ -2,7 +2,6 @@ package com.spring.boot.smartcontact.controller.contact;
 
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;
-import com.spring.boot.smartcontact.service.ContactService;
 import com.spring.boot.smartcontact.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +12,11 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("/user")
-public class CreateController {
+public class ContactCreateController {
 
     private final UserService userService;
 
-    public CreateController(UserService userService) {
+    public ContactCreateController(UserService userService) {
         this.userService = userService;
     }
 
@@ -35,7 +34,7 @@ public class CreateController {
         model.addAttribute("contact", new Contact());
         model.addAttribute("title", "Add Contact");
         model.addAttribute("showSidebar", true);
-        return "normal/add_contact_form";
+        return "user/add_contact_form";
     }
 
     @PostMapping("/process-contact")
@@ -51,6 +50,6 @@ public class CreateController {
         model.addAttribute("showSidebar", true);
         userService.loadImageAndSave(contact, file, principal.getName());
 
-        return "normal/add_contact_form";
+        return "user/add_contact_form";
     }
 }

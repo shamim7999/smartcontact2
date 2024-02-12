@@ -13,11 +13,11 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("/user")
-public class ManipulateController {
+public class ContactManipulateController {
     private final UserService userService;
     private final ContactService contactService;
 
-    public ManipulateController(UserService userService, ContactService contactService) {
+    public ContactManipulateController(UserService userService, ContactService contactService) {
         this.userService = userService;
         this.contactService = contactService;
     }
@@ -35,7 +35,7 @@ public class ManipulateController {
 
         model.addAttribute("contact", contactService.findById(contactId));
         model.addAttribute("showSidebar", true);
-        return "normal/update_contact";
+        return "user/update_contact";
     }
 
     @PostMapping("/process-update-contact")

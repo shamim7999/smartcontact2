@@ -82,7 +82,7 @@ public class UserController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", productList.getTotalPages());
         model.addAttribute("showSidebar", true);
-        return "normal/show_products";
+        return "user/show_products";
     }
 
     @PostMapping("/add-product")
@@ -117,7 +117,7 @@ public class UserController {
 
         model.addAttribute("adminProductList", adminProductList);
         model.addAttribute("showSidebar", true);
-        return "normal/select_products";
+        return "user/select_products";
     }
     @PostMapping("/add-multiple-products")
     public String addMultipleProduct(@RequestParam("dropDownList") List<Integer> itemsIds, Model model) {

@@ -22,10 +22,10 @@
                     <th scope="row" th:text="${p.productId}">1</th>
                     <td th:text="${p.productName}">Mark</td>
                     <td class="inliner">
-                        <form method="post" th:action="@{'/normal/delete-contact/'+${p.productId}}">
+                        <form method="post" th:action="@{'/user/delete-contact/'+${p.productId}}">
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
-                        <form method="post" th:action="@{'/normal/update-contact/'+${p.productId}}">
+                        <form method="post" th:action="@{'/user/update-contact/'+${p.productId}}">
                             <button type="submit" class="btn btn-primary btn-sm">Update</button>
                         </form>
                     </td>

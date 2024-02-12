@@ -14,12 +14,12 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
-public class ShowController {
+public class ContactShowController {
 
     private final UserService userService;
     private final ContactService contactService;
 
-    public ShowController(UserService userService, ContactService contactService) {
+    public ContactShowController(UserService userService, ContactService contactService) {
         this.userService = userService;
         this.contactService = contactService;
     }
@@ -43,7 +43,7 @@ public class ShowController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", contactList.getTotalPages());
         model.addAttribute("showSidebar", true);
-        return "normal/show_contacts";
+        return "user/show_contacts";
     }
 
     @GetMapping("/contact/{cId}")
