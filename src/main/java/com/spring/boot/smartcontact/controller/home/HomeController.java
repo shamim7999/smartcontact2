@@ -58,7 +58,7 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute ("user") User user, BindingResult result,
+    public String registerUser(@Valid @ModelAttribute  User user, BindingResult result,
                                @RequestParam("profileImage") MultipartFile file,
                                @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
                                Model model,

@@ -1,4 +1,4 @@
-package com.spring.boot.smartcontact.controller.contact;
+package com.spring.boot.smartcontact.controller.user;
 
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;
@@ -47,7 +47,7 @@ public class ContactShowController {
     }
 
     @GetMapping("/contact/{cId}")
-    public String contactDetails(@PathVariable("cId") int cId,
+    public String contactDetails(@PathVariable int cId,
                                  Model model) {
         User user = (User) model.getAttribute("user");
         if(!user.isEnabled())

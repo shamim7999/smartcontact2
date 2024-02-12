@@ -1,4 +1,4 @@
-package com.spring.boot.smartcontact.controller.contact;
+package com.spring.boot.smartcontact.controller.user;
 
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;
@@ -12,11 +12,11 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("/user")
-public class ContactCreateController {
+public class ContactAddController {
 
     private final UserService userService;
 
-    public ContactCreateController(UserService userService) {
+    public ContactAddController(UserService userService) {
         this.userService = userService;
     }
 
@@ -38,7 +38,7 @@ public class ContactCreateController {
     }
 
     @PostMapping("/process-contact")
-    public String processContact(@ModelAttribute("contact") Contact contact,
+    public String processContact(@ModelAttribute Contact contact,
                                  @RequestParam("profileImage") MultipartFile file,
                                  Principal principal, Model model) {
         User user = (User) model.getAttribute("user");

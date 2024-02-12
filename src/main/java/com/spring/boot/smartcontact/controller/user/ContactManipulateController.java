@@ -1,4 +1,4 @@
-package com.spring.boot.smartcontact.controller.contact;
+package com.spring.boot.smartcontact.controller.user;
 
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;
@@ -27,8 +27,8 @@ public class ContactManipulateController {
         return userService.getUserByUserName(principal.getName());
     }
 
-    @PostMapping("/update-contact/{id}")
-    public String updateContact(@PathVariable("id") Integer contactId, Model model) {
+    @PostMapping("/update-contact/{contactId}")
+    public String updateContact(@PathVariable Integer contactId, Model model) {
         User user = (User) model.getAttribute("user");
         if(!user.isEnabled())
             return "redirect:/logout";
@@ -39,7 +39,7 @@ public class ContactManipulateController {
     }
 
     @PostMapping("/process-update-contact")
-    public String processUpdateContact(@ModelAttribute("contact") Contact contact,
+    public String processUpdateContact(@ModelAttribute Contact contact,
                                        @RequestParam("profileImage") MultipartFile file,
                                        Principal principal,
                                        Model model) {
@@ -58,8 +58,8 @@ public class ContactManipulateController {
         return "redirect:/user/show-contacts";
     }
 
-    @PostMapping("/delete-contact/{id}")
-    public String deleteContact(@PathVariable("id") Integer contactId, Model model) {
+    @PostMapping("/delete-contact/{contactId}")
+    public String deleteContact(@PathVariable Integer contactId, Model model) {
         Contact contact = contactService.findById(contactId);
         User user = (User) model.getAttribute("user");
         if(!user.isEnabled())

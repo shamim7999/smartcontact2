@@ -55,13 +55,13 @@ public class AdminController {
 
 
     @PostMapping("/suspend-user/{id}")
-    public String suspendUser(@PathVariable("id") int id) {
+    public String suspendUser(@PathVariable int id) {
         userService.suspendUserById(id);
         return "redirect:/admin/show-users";
     }
 
     @PostMapping("/enable-user/{id}")
-    public String enableUser(@PathVariable("id") int id) {
+    public String enableUser(@PathVariable int id) {
         userService.enableUserById(id);
         return "redirect:/admin/show-users";
     }
@@ -72,7 +72,7 @@ public class AdminController {
     }
 
     @PostMapping("/process-product")
-    public String processProduct(@ModelAttribute("adminProduct") AdminProduct adminProduct,
+    public String processProduct(@ModelAttribute AdminProduct adminProduct,
                                  Model model) {
         String productName = adminProduct.getAdminProductName() + "-" + LocalTime.now();
         adminProduct.setAdminProductName(productName);
