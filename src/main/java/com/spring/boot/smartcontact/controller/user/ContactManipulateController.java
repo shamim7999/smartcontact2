@@ -26,7 +26,10 @@ public class ContactManipulateController {
     public User addCommonAttribute(Principal principal) {
         return userService.getUserByUserName(principal.getName());
     }
-
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
+    }
     @PostMapping("/update-contact/{contactId}")
     public String updateContact(@PathVariable Integer contactId, Model model) {
         User user = (User) model.getAttribute("user");

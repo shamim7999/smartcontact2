@@ -29,7 +29,10 @@ public class ProductShowController {
         model.addAttribute("user", user);
         model.addAttribute("showSidebar", true);
     }
-
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
+    }
     @GetMapping("/show-products")
     public String showProducts() {
         System.out.println(adminProductService.findAll());

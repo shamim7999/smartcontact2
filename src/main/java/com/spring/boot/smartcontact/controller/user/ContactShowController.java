@@ -23,7 +23,10 @@ public class ContactShowController {
         this.userService = userService;
         this.contactService = contactService;
     }
-
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
+    }
     @ModelAttribute
     public User addCommonAttribute(Principal principal) {
         return userService.getUserByUserName(principal.getName());

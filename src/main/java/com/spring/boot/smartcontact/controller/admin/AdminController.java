@@ -23,6 +23,11 @@ public class AdminController {
         model.addAttribute("user", user);
         model.addAttribute("showSidebar", true);
     }
+
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
+    }
     @GetMapping("/index")
     public String adminHome(Model model) {
         model.addAttribute("title", "Admin Dashboard");

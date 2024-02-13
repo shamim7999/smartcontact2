@@ -25,7 +25,10 @@ public class UserManipulateController {
         model.addAttribute("user", user);
         model.addAttribute("showSidebar", true);
     }
-
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
+    }
     @PostMapping("/suspend-user/{id}")
     public String suspendUser(@PathVariable int id) {
         userService.suspendUserById(id);

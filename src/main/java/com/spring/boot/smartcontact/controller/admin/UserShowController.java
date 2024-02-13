@@ -21,7 +21,10 @@ public class UserShowController {
     public UserShowController(UserService userService) {
         this.userService = userService;
     }
-
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
+    }
     @ModelAttribute
     public void addCommonAttribute(Model model, Principal principal) {
         User user = userService.getUserByUserName(principal.getName());

@@ -30,7 +30,10 @@ public class UserProductShowController {
     public User addCommonAttribute(Principal principal) {
         return userService.getUserByUserName(principal.getName());
     }
-
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
+    }
 
     @GetMapping("/show-products")
     public String showProducts(@RequestParam("page") Optional<Integer> page, Model model) {

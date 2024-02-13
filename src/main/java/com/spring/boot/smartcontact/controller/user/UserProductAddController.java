@@ -31,7 +31,10 @@ public class UserProductAddController {
     public User addCommonAttribute(Principal principal) {
         return userService.getUserByUserName(principal.getName());
     }
-
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
+    }
     @PostMapping("/add-product")
     public String addProduct(@RequestParam("dropDownList") int productId, Model model) {
         User user = (User) model.getAttribute("user");

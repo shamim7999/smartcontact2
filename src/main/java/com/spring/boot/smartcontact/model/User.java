@@ -1,8 +1,7 @@
 package com.spring.boot.smartcontact.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +12,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotNull(message = "Name field is required.")
     @NotBlank(message = "Name field is required.")
     @Size(min = 2, max = 20, message = "Enter name between 2 to 20 characters.")
     private String name;
     @Column(unique = true)
+    @NotBlank(message = "Enter valid email address.")
+    @NotNull(message = "Enter valid email address.")
+    @Size(min = 10, message = "Enter valid email address.")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$", message = "Enter valid email.")
+    @Email
     private String email;
+
+    @Size(min=3, message = "Password minimum length must be 3.")
     private String password; 
     private String role;
     private boolean enabled;

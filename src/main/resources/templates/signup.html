@@ -6,68 +6,97 @@
 </head>
 <body>
 <section>
-    <div class="container">
-        <div class="col-md-8 offset-md-2">
-            <div class="my-card mt-1">
-                <div class="container text-center">
-                    <img width="100px" th:src="@{/image/membership.png}" alt="No Image..">
-                </div>
-                <h1 class="text-center">Register Here !!</h1>
-                <form novalidate="novalidate" th:action="@{/register}" method="post" enctype="multipart/form-data">
-                    <!--                    name field-->
-                    <div class="form-group mb-3">
-                        <label for="name">Your Name</label>
-                        <input type="text" class="form-control "
-                               id="name" name="name" aria-describedby="email_help"
-                               placeholder="Enter Name"
-                               required
-                        >
-                    </div>
+    <div class="signup">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="my-card mt-1">
 
-                    <!--                    email field-->
-                    <div class="form-group mb-3">
-                        <label for="email">Your Email</label>
-                        <input type="text" class="form-control"
-                               id="email" name="email" aria-describedby="email_help"
-                               placeholder="Enter email"
-                               required
-                        >
-                    </div>
+                        <!--                        alert message-->
+                        <div th:if="${message}" th:classappend="${message.type}" class="alert" role="alert">
+                            <p th:text="${message.content}"></p>
+                        </div>
 
-                    <!--                    password field-->
-                    <div class="form-group mb-3">
-                        <label for="password">Your Password</label>
-                        <input type="password" class="form-control"
-                               id="password" name="password" aria-describedby="email_help"
-                               placeholder="Enter password"
-                               required
-                        >
-                    </div>
-                    <!--                                            User about Field-->
-                    <div class="form-group mb-3">
+                        <div class="container text-center">
+                            <img width="100px" th:src="@{/image/membership.png}" alt="No Image..">
+                        </div>
+                        <h1 class="text-center">Register Here !!</h1>
+                        <form th:object="${user}" novalidate="novalidate" th:action="@{/register}" method="post" enctype="multipart/form-data">
+                            <!--                    name field-->
+                            <div class="form-group mb-3">
+                                <label for="name">Your Name</label>
+                                <input type="text" class="form-control "
+                                       id="name" name="name" aria-describedby="email_help"
+                                       placeholder="Enter Name"
+                                       th:value="${user.name}"
+                                       th:classappend="${(#fields.hasErrors('name') or user.name == null) ? 'is-invalid' : 'is-valid'}"
+                                       required
+                                >
+                                <div th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback"></div>
+                                <div th:if="${(not #fields.hasErrors('name') and user.name != null) }" class="valid-feedback">
+                                    Looks Good
+                                </div>
+                            </div>
+
+                            <!--                    email field-->
+                            <div class="form-group mb-3">
+                                <label for="email">Your Email</label>
+                                <input type="text" class="form-control"
+                                       id="email" name="email" aria-describedby="email_help"
+                                       placeholder="Enter email"
+                                       th:value="${user.email}"
+                                       th:classappend="${(#fields.hasErrors('email') or user.email == null) ? 'is-invalid' : 'is-valid'}"
+                                       required
+                                >
+                                <div th:each="e : ${#fields.errors('email')}" th:text="${e}" class="invalid-feedback"></div>
+                                <div th:if="${(not #fields.hasErrors('email') and user.email != null) }" class="valid-feedback">
+                                    Looks Good
+                                </div>
+                            </div>
+
+                            <!--                    password field-->
+                            <div class="form-group mb-3">
+                                <label for="password">Your Password</label>
+                                <input type="password" class="form-control"
+                                       id="password" name="password" aria-describedby="email_help"
+                                       placeholder="Enter password"
+                                       th:classappend="${(#fields.hasErrors('password') or user.password == null) ? 'is-invalid' : 'is-valid'}"
+                                       required
+                                >
+                                <div th:each="e : ${#fields.errors('password')}" th:text="${e}" class="invalid-feedback"></div>
+                                <div th:if="${(not #fields.hasErrors('password') and user.password != null) }" class="valid-feedback">
+                                    Looks Good
+                                </div>
+                            </div>
+                            <!--                                            User about Field-->
+                            <div class="form-group mb-3">
                         <textarea class="form-control"
                                   placeholder="Enter something about yourself.."
                                   rows="10" name="about"></textarea>
-                    </div>
-                    <div class="custom-file">
-                        <input type="file" name="profileImage">
-                    </div>
-                    <!--                                        Terms and Condition Agreement-->
-                    <div class="form-group form-check text-center">
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" name="profileImage">
+                            </div>
+                            <!--                                        Terms and Condition Agreement-->
+                            <div class="form-group form-check text-center">
 
-                        <input type="checkbox"
-                               name="agreement"
-                               class="form-check-input"
-                               id="agreement"
-                        >
-                        <label for="agreement">Agree to our terms and condition.</label>
-                    </div>
+                                <input type="checkbox"
+                                       name="agreement"
+                                       class="form-check-input"
+                                       id="agreement"
+                                >
 
-                    <div class="container text-center">
-                        <button type="submit" class="btn bg-primary text-white">Submit</button>
-                        <button type="reset" class="btn bg-warning text-white">Reset</button>
+                                <label for="agreement">Agree to our terms and condition.</label>
+
+                            </div>
+
+                            <div class="container text-center">
+                                <button type="submit" class="btn bg-primary text-white">Submit</button>
+                                <button type="reset" class="btn bg-warning text-white">Reset</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

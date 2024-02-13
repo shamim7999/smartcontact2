@@ -28,7 +28,10 @@ public class ProductAddController {
         this.userService = userService;
         this.adminProductService = adminProductService;
     }
-
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
+    }
     @ModelAttribute
     public void addCommonAttribute(Model model, Principal principal) {
         User user = userService.getUserByUserName(principal.getName());

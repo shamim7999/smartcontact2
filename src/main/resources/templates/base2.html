@@ -19,22 +19,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto navbar-nav-scroll text-uppercase" style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:if="${user == null}" th:href="@{/}">Home</a>
-                    <a class="nav-link active" aria-current="page" th:if="${user != null && user.role == 'ROLE_USER'}" th:href="@{/user/index}">User Dashboard</a>
-                    <a class="nav-link active" aria-current="page" th:if="${user != null && user.role == 'ROLE_ADMIN'}" th:href="@{/admin/index}">Admin Dashboard</a>
+                    <a class="nav-link active" aria-current="page" th:if="${principal == null}" th:href="@{/}">Home</a>
+                    <a class="nav-link active" aria-current="page" th:if="${principal != null && user.role == 'ROLE_USER'}" th:href="@{/user/index}">User Dashboard</a>
+                    <a class="nav-link active" aria-current="page" th:if="${principal != null && user.role == 'ROLE_ADMIN'}" th:href="@{/admin/index}">Admin Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" th:if="${user == null || showLoginButton == 1}" aria-disabled="false" th:href="@{/login}">Login</a>
+                    <a class="nav-link" th:if="${principal == null || showLoginButton == 1}" aria-disabled="false" th:href="@{/login}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-disabled="false" th:if="${user != null && user.email != null}" th:href="@{/logout}">Logout</a>
+                    <a class="nav-link" aria-disabled="false" th:if="${principal != null}" th:href="@{/logout}">Logout</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:if="${user == null }" th:href="@{/signup}">Sign Up</a>
+                    <a class="nav-link" th:if="${principal == null }" th:href="@{/signup}">Sign Up</a>
                 </li>
             </ul>
             <!--            <form class="d-flex" role="search">-->

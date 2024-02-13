@@ -1,14 +1,17 @@
 package com.spring.boot.smartcontact.controller.home;
 
+import com.spring.boot.smartcontact.helper.Message;
 import com.spring.boot.smartcontact.service.UserService;
 import com.spring.boot.smartcontact.model.User;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalTime;
@@ -25,13 +28,18 @@ public class HomeController {
     public void addCommonAttribute(Model model, Principal principal) {
         model.addAttribute("showBottom", false);
         model.addAttribute("time", LocalTime.now());
+        model.addAttribute("principal", principal);
     }
-
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
+    }
     @GetMapping({"/", "/home"})
     public String dispatch(Model model, Principal principal) {
         model.addAttribute("title", "Home Page");
         model.addAttribute("message", "Hi");
         model.addAttribute("type", "success");
+
 
         if(principal == null)
             return "redirect:/login";
@@ -54,39 +62,36 @@ public class HomeController {
     @GetMapping("/signup")
     public String signUp(Model model) {
         model.addAttribute("title", "Sign Up - Smart Contact");
+        model.addAttribute("user", new User());
         return "signup";
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute  User user, BindingResult result,
+    public String registerUser(@Valid @ModelAttribute User user, BindingResult result,
                                @RequestParam("profileImage") MultipartFile file,
                                @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
-                               Model model,
-                               HttpSession session) {
+                               RedirectAttributes redirectAttributes) {
         if(!file.isEmpty())
             user.setImageUrl(file.getOriginalFilename());
         System.out.println(user);
         try {
             if(!agreement) {
-                System.out.println("You haven't agreed to our terms and conditions.");
+                result.rejectValue("agreement", "", "You haven't agreed to our terms and conditions.");
                 throw new Exception("You haven't agreed to our terms and conditions.");
             }
             if(result.hasErrors()) {
-                System.out.println("ERROR: "+result.toString());
-                model.addAttribute("user", user);
                 return "signup";
             }
 
             this.userService.save(user);
-
-            model.addAttribute("user", user);
-
-
-            return "signup";
+            redirectAttributes.addFlashAttribute("message",
+                    new Message("Account created successfully", "alert-success"));
+            return "redirect:/signup";
 
         } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("user", user);
+            if(e instanceof DataAccessException) {
+                result.rejectValue("email", "", "This email already exists.");
+            }
             return "signup";
         }
     }

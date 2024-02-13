@@ -1,20 +1,15 @@
 package com.spring.boot.smartcontact.controller.user;
 
 import com.spring.boot.smartcontact.service.AdminProductService;
-import com.spring.boot.smartcontact.service.ContactService;
-import com.spring.boot.smartcontact.service.ProductService;
+
 import com.spring.boot.smartcontact.service.UserService;
 import com.spring.boot.smartcontact.model.AdminProduct;
-import com.spring.boot.smartcontact.model.Contact;
-import com.spring.boot.smartcontact.model.Product;
 import com.spring.boot.smartcontact.model.User;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -29,6 +24,10 @@ public class UserController {
     @ModelAttribute
     public User addCommonAttribute(Principal principal) {
         return userService.getUserByUserName(principal.getName());
+    }
+    @ModelAttribute
+    public Principal sendPrincipal(Principal principal) {
+        return principal;
     }
     @GetMapping("/index")
     public String dashBoard(Model model) {
