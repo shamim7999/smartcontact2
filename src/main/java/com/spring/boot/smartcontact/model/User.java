@@ -21,7 +21,7 @@ public class User {
     @NotNull(message = "Enter valid email address.")
     @Size(min = 10, message = "Enter valid email address.")
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$", message = "Enter valid email.")
-    @Email
+    //@Email(message = "Enter Valid Email.")
     private String email;
 
     @Size(min=3, message = "Password minimum length must be 3.")
