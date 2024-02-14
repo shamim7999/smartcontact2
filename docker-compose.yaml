@@ -1,0 +1,35 @@
+version: '3'
+services:
+  mss-scm-app:
+    container_name: mss-scm-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "10555:8081"
+    environment:
+      - spring.datasource.url=jdbc:mysql://docker-mysql:3306/contact
+      - spring.datasource.username=root
+      - spring.datasource.password=12345
+      - WAIT_HOSTS=mysql:3306
+    depends_on:
+      - docker-mysql
+
+  docker-mysql:
+    container_name: docker-mysql
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: contact
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_ROOT_HOST: '%'
+    #    volumes:
+    #      - ./sql:docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=12345 --execute \"SHOW DATABASES\""
+      interval: 4s
+      timeout: 20s
+      retries: 5
