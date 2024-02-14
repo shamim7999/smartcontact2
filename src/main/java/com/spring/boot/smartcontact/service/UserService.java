@@ -40,7 +40,7 @@ public class UserService {
     }
 
     public User getUserByUserName(String userEmail) {
-        return this.userRepository.getUserByUserName(userEmail);
+        return userRepository.getUserByUserName(userEmail);
     }
 
     public Page<User> findAllUser(Integer currentPage) {
@@ -54,52 +54,52 @@ public class UserService {
         user.setRole("ROLE_USER");
         if(user.getImageUrl().isEmpty())
             user.setImageUrl("profile.jpg");
-        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         System.out.println("User: "+user);
 
 
-        this.userRepository.save(user);
+        userRepository.save(user);
     }
 
     public void saveUserProduct(User user, List<Integer> itemsIds) {
         Product product = new Product();
 
         for(Integer id : itemsIds) {
-            AdminProduct adminProduct = this.adminProductRepository.findById(id).get();
+            AdminProduct adminProduct = adminProductRepository.findById(id).get();
             product.setProductId(adminProduct.getId());
             product.setProductName(adminProduct.getProductName());
             product.setUser(user);
 
-            this.productRepository.save(product);
+            productRepository.save(product);
 
             adminProduct.setProductStatus(1);
-            this.adminProductRepository.save(adminProduct);
+            adminProductRepository.save(adminProduct);
         }
     }
 
     public User findUserById(int id) {
-        return this.userRepository.findById(id).get();
+        return userRepository.findById(id).get();
     }
     public void enableUserById(int id) {
         User user = findUserById(id);
         user.setEnabled(true);
-        this.userRepository.save(user);
+        userRepository.save(user);
     }
     public void suspendUserById(int id) {
         User user = findUserById(id);
         user.setEnabled(false);
-        this.userRepository.save(user);
+        userRepository.save(user);
         System.out.println("USER: "+user);
     }
     public String encode(String userPassword) {
-        return this.bCryptPasswordEncoder.encode(userPassword);
+        return bCryptPasswordEncoder.encode(userPassword);
     }
 
     public void loadImageAndSave(Contact contact, MultipartFile file, String userEmail) {
         try {
             System.out.println(contact);
-            User user = this.userRepository.getUserByUserName(userEmail);
+            User user = userRepository.getUserByUserName(userEmail);
 
             String originalFileName = "profile.jpg";
             if(!file.isEmpty())
@@ -114,7 +114,6 @@ public class UserService {
 
             contact.setUser(user);
             user.getContacts().add(contact);
-            //this.userService.save(user);
 
             userRepository.save(user);
 
