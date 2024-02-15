@@ -5,6 +5,8 @@ import com.spring.boot.smartcontact.service.UserService;
 import com.spring.boot.smartcontact.model.User;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import java.time.LocalTime;
 
 @Controller
 public class HomeController {
+    private final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private final UserService userService;
 
     public HomeController(UserService userService) {
@@ -73,7 +76,7 @@ public class HomeController {
                                RedirectAttributes redirectAttributes) {
         if(!file.isEmpty())
             user.setImageUrl(file.getOriginalFilename());
-        System.out.println(user);
+        logger.info("HOME CONTROLLER USER: {}", user);
         try {
             if(!agreement) {
                 result.rejectValue("agreement", "", "You haven't agreed to our terms and conditions.");

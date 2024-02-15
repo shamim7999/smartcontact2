@@ -4,6 +4,8 @@ import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;
 import com.spring.boot.smartcontact.service.ContactService;
 import com.spring.boot.smartcontact.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/user")
 public class ContactShowController {
-
+    private final Logger logger = LoggerFactory.getLogger(ContactShowController.class);
     private final UserService userService;
     private final ContactService contactService;
 
@@ -39,7 +41,7 @@ public class ContactShowController {
 
         int currentPage = page.orElse(1);
         Page<Contact> contactList = contactService.getContactsByUserId(user.getId(), currentPage-1);
-        System.out.println(contactList);
+        logger.info("contactList: {}", contactList);
 
         model.addAttribute("title", "All Contacts");
         model.addAttribute("contactList", contactList);
@@ -58,7 +60,7 @@ public class ContactShowController {
 
         model.addAttribute("contact", contactService.findById(cId));
         model.addAttribute("showSidebar", true);
-        System.out.println(contactService.findById(cId));
+        logger.info("Contact by Id: {}", contactService.findById(cId));
         return "show_contact_details";
     }
 }

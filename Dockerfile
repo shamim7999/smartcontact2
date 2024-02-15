@@ -10,7 +10,7 @@ FROM openjdk:17-jdk-alpine
 WORKDIR /app
 COPY --from=scm_backend_builder /app/target/smartcontact-0.0.1-SNAPSHOT.jar mss-scm.jar
 
-EXPOSE 8080
+EXPOSE 8081
 
 # Specify the default command to run on startup
 CMD ["java", "-jar", "mss-scm.jar"]

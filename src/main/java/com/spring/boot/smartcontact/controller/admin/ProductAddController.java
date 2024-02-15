@@ -5,6 +5,8 @@ import com.spring.boot.smartcontact.model.User;
 import com.spring.boot.smartcontact.service.AdminProductService;
 import com.spring.boot.smartcontact.service.UserService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +21,7 @@ import java.time.LocalTime;
 @Controller
 @RequestMapping("/admin")
 public class ProductAddController {
-
+    private final Logger logger = LoggerFactory.getLogger(ProductAddController.class);
     private final UserService userService;
     private final AdminProductService adminProductService;
 
@@ -49,7 +51,7 @@ public class ProductAddController {
     public String processProduct(@Valid @ModelAttribute AdminProduct adminProduct,
                                  BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            System.out.println(bindingResult);
+            logger.info("Binding Result: {}", bindingResult);
         }
         String productName = adminProduct.getProductName() + "-" + LocalTime.now();
         adminProduct.setProductName(productName);

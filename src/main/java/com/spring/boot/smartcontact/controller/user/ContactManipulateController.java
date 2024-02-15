@@ -4,6 +4,8 @@ import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.User;
 import com.spring.boot.smartcontact.service.ContactService;
 import com.spring.boot.smartcontact.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/user")
 public class ContactManipulateController {
+    private final Logger logger = LoggerFactory.getLogger(ContactManipulateController.class);
     private final UserService userService;
     private final ContactService contactService;
 
@@ -55,7 +58,7 @@ public class ContactManipulateController {
         contact.setUser(user);
         if(!file.isEmpty())
             contact.setImage(file.getOriginalFilename());
-        System.out.println(contact);
+        logger.info("Contact: {}", contact);
         contactService.save(contact);
 
         return "redirect:/user/show-contacts";

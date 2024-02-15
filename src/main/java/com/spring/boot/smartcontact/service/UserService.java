@@ -7,6 +7,8 @@ import com.spring.boot.smartcontact.model.AdminProduct;
 import com.spring.boot.smartcontact.model.Contact;
 import com.spring.boot.smartcontact.model.Product;
 import com.spring.boot.smartcontact.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +26,7 @@ import java.util.List;
 
 @Service
 public class UserService {
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -56,7 +59,7 @@ public class UserService {
             user.setImageUrl("profile.jpg");
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-        System.out.println("User: "+user);
+        logger.info("User: {}", user);
 
 
         userRepository.save(user);
@@ -90,7 +93,7 @@ public class UserService {
         User user = findUserById(id);
         user.setEnabled(false);
         userRepository.save(user);
-        System.out.println("USER: "+user);
+        logger.info("USER: {}", user);
     }
     public String encode(String userPassword) {
         return bCryptPasswordEncoder.encode(userPassword);
@@ -98,7 +101,7 @@ public class UserService {
 
     public void loadImageAndSave(Contact contact, MultipartFile file, String userEmail) {
         try {
-            System.out.println(contact);
+            logger.info("CONTACT: {}", contact);
             User user = userRepository.getUserByUserName(userEmail);
 
             String originalFileName = "profile.jpg";
